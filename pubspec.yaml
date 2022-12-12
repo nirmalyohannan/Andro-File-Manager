@@ -36,7 +36,7 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  # cupertino_icons: ^1.0.2
   open_file: ^3.2.1
   permission_handler: ^10.2.0
   percent_indicator: ^4.2.2
@@ -44,6 +44,8 @@ dependencies:
   # fast_color_picker: ^0.1.1
   ncscolor: ^0.0.1
   ms_material_color: ^1.0.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 
 

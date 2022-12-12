@@ -1,3 +1,4 @@
+import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:ms_material_color/ms_material_color.dart';
@@ -36,13 +37,16 @@ Future<void> colorPicker(BuildContext context) async {
 
 Widget colorBox(Color color) {
   return GestureDetector(
-    onTap: () {
+    onTap: () async {
       String colorHex =
           ColorConvert.rgbToHex(r: color.red, b: color.blue, g: color.green);
       colorHex = '0xFF${colorHex.replaceAll('#', '')}';
 
       primaryColor.value = MsMaterialColor(int.parse(colorHex));
       primaryColor.notifyListeners();
+      await appThemeBox.put('colorRed', primaryColor.value.red);
+      await appThemeBox.put('colorGreen', primaryColor.value.green);
+      await appThemeBox.put('colorBlue', primaryColor.value.blue);
     },
     child: Container(
       decoration: BoxDecoration(color: color),

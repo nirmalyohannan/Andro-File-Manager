@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 List<String> audioTypes = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a'];
 List<String> videoTypes = ['mp4', 'mkv', 'avi', '3gp', 'm4v', 'webm', 'mov'];
@@ -23,3 +24,7 @@ String?
 
 ValueNotifier<List<FileSystemEntity>> selectedItems = ValueNotifier([]);
 //::::::::::::::::::::::::::::::::::::::::::::::::::
+
+//::::::::::::App Theme::::::::::::::::
+late Box appThemeBox;
+//:::::::::::::::::::::::::::::::::::::
