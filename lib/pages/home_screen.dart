@@ -1,3 +1,4 @@
+import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/authentication.dart';
 import 'package:androfilemanager/functions/open_dir.dart';
 import 'package:androfilemanager/pages/settings_screen.dart';
@@ -77,27 +78,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             iconTile(context,
                                 iconData: Icons.video_file_outlined,
                                 title: 'Videos',
-                                location: '/storage/emulated/0/Movies'),
+                                location: '${internalRootDir}Movies'),
                             iconTile(context,
                                 iconData: Icons.image_outlined,
                                 title: 'Pictures',
-                                location: '/storage/emulated/0/Pictures'),
+                                location: '${internalRootDir}Pictures'),
                             iconTile(context,
                                 iconData: Icons.music_note_outlined,
                                 title: 'Musics',
-                                location: '/storage/emulated/0/Music'),
+                                location: '${internalRootDir}Music'),
                             iconTile(context,
                                 iconData: Icons.download,
                                 title: 'Downloads',
-                                location: '/storage/emulated/0/Download'),
+                                location: '${internalRootDir}Download'),
                             iconTile(context,
                                 iconData: Icons.file_copy,
                                 title: 'Documents',
-                                location: '/storage/emulated/0/Documents'),
+                                location: '${internalRootDir}Documents'),
                             iconTile(context,
                                 iconData: Icons.android,
                                 title: 'Apps',
-                                location: '/storage/emulated/0/Download'),
+                                location: '${internalRootDir}Download'),
                           ],
                         ),
                       ),
@@ -114,9 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: 'Protected Files',
                 onPressed: () async {
                   if (await authenticate()) {
-                    openDir(context,
-                        location: await getApplicationDocumentsDirectory()
-                            .then((value) => value.path));
+                    openDir(context, location: protectedDir.path);
                   }
                 },
               )

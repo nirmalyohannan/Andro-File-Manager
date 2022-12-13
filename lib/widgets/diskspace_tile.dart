@@ -23,9 +23,9 @@ Widget diskSpaceTile(BuildContext context, {bool isInternalStorage = true}) {
       size: 50,
     );
     totalGB =
-        diskSpace.totalInternalBytes().then((value) => formatFileSizeGB(value));
+        storage.totalInternalBytes().then((value) => formatFileSizeGB(value));
     freeGB =
-        diskSpace.freeInternalBytes().then((value) => formatFileSizeGB(value));
+        storage.freeInternalBytes().then((value) => formatFileSizeGB(value));
   } else if (externalStorageExists) {
     location = externalRootDir!;
     title = 'External Storage';
@@ -34,9 +34,9 @@ Widget diskSpaceTile(BuildContext context, {bool isInternalStorage = true}) {
       size: 50,
     );
     totalGB =
-        diskSpace.totalExternalBytes().then((value) => formatFileSizeGB(value));
+        storage.totalExternalBytes().then((value) => formatFileSizeGB(value));
     freeGB =
-        diskSpace.freeExternalBytes().then((value) => formatFileSizeGB(value));
+        storage.freeExternalBytes().then((value) => formatFileSizeGB(value));
   } else {
     return const Text("No External Storage");
   }

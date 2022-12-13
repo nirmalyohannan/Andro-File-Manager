@@ -1,10 +1,10 @@
-import 'package:androfilemanager/functions/disk_space.dart';
+import 'package:androfilemanager/functions/storage.dart';
 import 'package:androfilemanager/pages/splash_screen.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:flutter/material.dart';
 
-DiskSpace diskSpace = DiskSpace();
-void main() async {
+Storage storage = Storage();
+void main() {
   runApp(const AndroFileManager());
 }
 
