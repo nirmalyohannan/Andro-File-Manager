@@ -1,8 +1,11 @@
+import 'package:androfilemanager/functions/authentication.dart';
+import 'package:androfilemanager/functions/open_dir.dart';
 import 'package:androfilemanager/pages/settings_screen.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/diskspace_tile.dart';
 import 'package:androfilemanager/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../widgets/icon_tile.dart';
 
@@ -51,21 +54,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 40),
                         child: Image.asset(
-                          'assets/logo/AndroFileManagerLogo.png',
-                          width: 300,
+                          // 'assets/logo/AndroFileManagerLogo.png',
+                          // 'assets/logo/AndroFilesLogo.png',
+                          'assets/logo/AndroLogo.png',
+                          width: MediaQuery.of(context).size.width / 1.7,
                         ),
                       ),
                       //:::::::::::Videos,Pictures,Musics,Downloads etc....Section::::::::::::
                       Container(
                         decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 230, 230, 230),
+                            color: Color.fromARGB(255, 231, 235, 242),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(40))),
                         child: GridView.count(
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          crossAxisSpacing: 1,
-                          mainAxisSpacing: 3,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
                           crossAxisCount: 3,
+                          padding: const EdgeInsets.all(10),
                           children: <Widget>[
                             iconTile(context,
                                 iconData: Icons.video_file_outlined,
@@ -99,9 +106,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               //:::::::::Disk Space Section::::::::
+              const SizedBox(height: 10),
               diskSpaceTile(context),
               diskSpaceTile(context, isInternalStorage: false),
-              tileButton(icon: Icons.settings, title: 'Protected Files')
+              tileButton(
+                icon: Icons.lock,
+                title: 'Protected Files',
+                onPressed: () async {
+                  if (await authenticate()) {
+                    openDir(context,
+                        location: await getApplicationDocumentsDirectory()
+                            .then((value) => value.path));
+                  }
+                },
+              )
             ],
           ),
         ),

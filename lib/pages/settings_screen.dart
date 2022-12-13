@@ -41,8 +41,8 @@ class _SettingScreenState extends State<SettingScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 40),
                       child: Image.asset(
-                        'assets/logo/AndroFileManagerLogo.png',
-                        width: 300,
+                        'assets/logo/AndroLogo.png',
+                        width: MediaQuery.of(context).size.width / 1.7,
                       ),
                     ),
                   ],
@@ -51,12 +51,13 @@ class _SettingScreenState extends State<SettingScreen> {
             ),
             //:::::::::Settings Items::::::::
 
-            GestureDetector(
-                onTap: () {
-                  colorPicker(context);
-                },
-                child:
-                    tileButton(icon: Icons.color_lens, title: 'Change Theme')),
+            tileButton(
+              icon: Icons.color_lens,
+              title: 'Change Theme',
+              onPressed: () {
+                colorPicker(context);
+              },
+            ),
 
             tileButton(icon: Icons.document_scanner, title: 'About App'),
           ],
