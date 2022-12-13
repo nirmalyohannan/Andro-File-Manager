@@ -31,6 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void androFilesInit() async {
     WidgetsFlutterBinding.ensureInitialized();
     checkPermissions();
+    internalRootDir = '${await storage.getInternalPath()}/';
     //::::::Hive Database App Theme::::::::::
     await Hive.initFlutter();
     await Hive.openBox('AppTheme');
@@ -55,11 +56,11 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     }
 
-    log(':::::${await diskSpace.totalInternalBytes()}::::');
-    log(':::::${await diskSpace.freeInternalBytes()}::::');
+    log(':::::${await storage.totalInternalBytes()}::::');
+    log(':::::${await storage.freeInternalBytes()}::::');
     if (externalStorageExists) {
-      log(':::::${await diskSpace.totalExternalBytes()}::::');
-      log(':::::${await diskSpace.freeExternalBytes()}::::');
+      log(':::::${await storage.totalExternalBytes()}::::');
+      log(':::::${await storage.freeExternalBytes()}::::');
     }
     //:::::::::::::protected Directory:::::::::::;
     String appDocumentPath =

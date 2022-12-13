@@ -13,10 +13,11 @@ List<String> appTypes = ['apk'];
 //:::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 //::::::::::::Directories:::::::::::::::::::::::::::
-String internalRootDir = '/storage/emulated/0/';
+String internalRootDir =
+    ''; //Internal storage path may vary for devices or OS versions, so have to find using function on app launch
 bool externalStorageExists = false;
 String?
-    externalRootDir; //external storage path may vary for devies, so have to find using function on app launch
+    externalRootDir; //external storage path may vary for devices, so have to find using function on app launch
 
 //:::::::::::::::::::::::::::::::::::::::::::::::::
 

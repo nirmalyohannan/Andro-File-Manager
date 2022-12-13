@@ -32,8 +32,8 @@ openDir(BuildContext context, {required String location}) {
 }
 
 bool locationValidation(String location, BuildContext context) {
-  if (location == '/storage/emulated/0/Android/data' ||
-      location == '/storage/emulated/0/Android/obb') {
+  if (location == '${internalRootDir}Android/data' ||
+      location == '${internalRootDir}Android/obb') {
     log("You are trying to access android"); //
     const snackBar = SnackBar(
       //snackbar for no permission

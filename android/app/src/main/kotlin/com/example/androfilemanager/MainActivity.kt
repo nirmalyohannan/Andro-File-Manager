@@ -2,6 +2,7 @@ package com.example.androfilemanager
 
 import android.app.usage.StorageStatsManager
 import android.content.Context
+import android.os.Environment
 import android.os.StatFs
 import android.os.storage.StorageManager
 import androidx.annotation.NonNull
@@ -12,12 +13,13 @@ import java.util.UUID
 
 class MainActivity : FlutterFragmentActivity() {
 
-    private val channel = "DiskSpace"
+    private val channel_1 = "Storage"
+    private val channel_2 = "Android"
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channel).setMethodCallHandler {
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channel_1).setMethodCallHandler {
                 call,
                 result ->
             if (call.method == "getInternalTotalSpace") {
@@ -28,6 +30,20 @@ class MainActivity : FlutterFragmentActivity() {
                 result.success(getExternalTotalSpace())
             } else if (call.method == "getExternalFreeSpace") {
                 result.success(getExternalFreeSpace())
+            } else if (call.method == "getInternalPath") {
+                val path: String = Environment.getExternalStorageDirectory().path
+                result.success(path)
+            } else {
+                result.notImplemented()
+            }
+        }
+
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channel_2).setMethodCallHandler {
+                call,
+                result ->
+            if (call.method == "getAndroidVersionInt") {
+
+                result.success(android.os.Build.VERSION.SDK_INT)
             } else {
                 result.notImplemented()
             }

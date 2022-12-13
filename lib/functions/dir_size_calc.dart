@@ -6,7 +6,7 @@ import 'package:androfilemanager/functions/dir_list_items.dart';
 int directorySizeCalc(String location) {
   int size = 0;
 
-  if (location == '/storage/emulated/0/Android' ||
+  if (location == '${internalRootDir}Android' ||
       location == '${externalRootDir}Android') {
     return -1;
   } else if (FileSystemEntity.isDirectorySync(location)) {
