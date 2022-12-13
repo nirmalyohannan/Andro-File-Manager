@@ -9,7 +9,9 @@ import '../widgets/file_type_Icon.dart';
 
 class FileExplorerScreen extends StatelessWidget {
   String location;
-  FileExplorerScreen({super.key, required this.location});
+  bool hideLocation;
+  FileExplorerScreen(
+      {super.key, required this.location, this.hideLocation = false});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class FileExplorerScreen extends StatelessWidget {
                   bottom: Radius.circular(40),
                 ),
               ),
-              child: Text(location),
+              child: Text(hideLocation ? '' : location),
             ),
           ),
           ValueListenableBuilder(

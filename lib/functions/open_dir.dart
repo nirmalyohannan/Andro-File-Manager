@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:androfilemanager/consts.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 
@@ -13,11 +14,16 @@ openDir(BuildContext context, {required String location}) {
   } else {
     log("You Clicked on a Folder:::::$location"); //
     if (locationValidation(location, context)) {
+      bool hideLocation = false;
+      if (protectedDir.path == location) {
+        hideLocation = true;
+      }
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => FileExplorerScreen(
             location: location,
+            hideLocation: hideLocation,
           ),
         ),
       );
