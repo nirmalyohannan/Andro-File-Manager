@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:androfilemanager/functions/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -18,13 +19,10 @@ String internalRootDir =
 bool externalStorageExists = false;
 String?
     externalRootDir; //external storage path may vary for devices, so have to find using function on app launch
+//:::::::::::::::::::::::::::::::::::::::::::::::::::
 
-//:::::::::::::::::::::::::::::::::::::::::::::::::
-
-//:::::::::::File Selection:::::::::::::::::::::::::
-
-ValueNotifier<List<FileSystemEntity>> selectedItems = ValueNotifier([]);
-//::::::::::::::::::::::::::::::::::::::::::::::::::
+ValueNotifier<List<FileSystemEntity>> selectedItems =
+    ValueNotifier([]); //File Selection
 
 //::::::::::::App Theme::::::::::::::::
 late Box appThemeBox;
@@ -33,3 +31,5 @@ late Box appThemeBox;
 //:::::::::App Directory:::::::::::::::
 late Directory protectedDir;
 //::::::::::::::::::::::::::::::::
+
+Storage storage = Storage();//storage related method channel functionalities

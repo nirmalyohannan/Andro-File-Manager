@@ -29,14 +29,12 @@ Widget fileFolderCard(BuildContext context,
             selectedItems.notifyListeners();
 
             print(selectedItems.value);
-            // folderColor.value = primaryColor.value;
           } else {
             print('unselect');
             selectedItems.value.remove(fileSystemEntity);
             selectedItems.notifyListeners();
 
             print(selectedItems.value);
-            // folderColor.value = Color.fromARGB(255, 230, 230, 230);
           }
         } else {
           openDir(context, location: path);
@@ -48,23 +46,12 @@ Widget fileFolderCard(BuildContext context,
           selectedItems.notifyListeners();
 
           print(selectedItems.value);
-          // folderColor.value = primaryColor.value;
-
         } else {
           print('::::${selectedItems.value.remove(fileSystemEntity)}');
           selectedItems.notifyListeners();
-
-          // folderColor.value = Color.fromARGB(255, 230, 230, 230);
         }
-
-        //
       },
-      child:
-          //  ValueListenableBuilder(
-          //     valueListenable: folderColor,
-          //     builder: (context, folderColor, child) {
-          //       return
-          Container(
+      child: Container(
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         decoration: BoxDecoration(
             color: folderColor,

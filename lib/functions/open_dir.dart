@@ -18,6 +18,7 @@ openDir(BuildContext context, {required String location}) {
       if (protectedDir.path == location) {
         hideLocation = true;
       }
+
       Navigator.push(
         context,
         MaterialPageRoute(

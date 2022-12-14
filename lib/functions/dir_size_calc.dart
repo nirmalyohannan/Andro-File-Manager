@@ -1,23 +1,21 @@
 import 'dart:io';
 
-import 'package:androfilemanager/consts.dart';
-import 'package:androfilemanager/functions/dir_list_items.dart';
-
 int directorySizeCalc(String location) {
   int size = 0;
 
-  if (location == '${internalRootDir}Android' ||
-      location == '${externalRootDir}Android') {
-    return -1;
-  } else if (FileSystemEntity.isDirectorySync(location)) {
-    List<FileSystemEntity> dirList = dirListItems(location: location);
-    for (var i = 0; i < dirList.length; i++) {
-      if (FileSystemEntity.isDirectorySync(dirList[i].path)) {
-        size = size + directorySizeCalc(dirList[i].path);
-      } else {
-        File file = File(dirList[i].path);
-        size = size + file.lengthSync();
+  if (FileSystemEntity.isDirectorySync(location)) {
+    try {
+      List<FileSystemEntity> dirList = Directory(location).listSync();
+      for (var i = 0; i < dirList.length; i++) {
+        if (FileSystemEntity.isDirectorySync(dirList[i].path)) {
+          size = size + directorySizeCalc(dirList[i].path);
+        } else {
+          File file = File(dirList[i].path);
+          size = size + file.lengthSync();
+        }
       }
+    } on FileSystemException {
+      return -1;
     }
   } else {
     File file = File(location);

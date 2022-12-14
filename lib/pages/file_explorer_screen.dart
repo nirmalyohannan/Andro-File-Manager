@@ -15,7 +15,7 @@ class FileExplorerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<FileSystemEntity> dirItems = dirListItems(location: location);
+    List<FileSystemEntity> dirItemsList = dirListItems(location: location);
     final String directoryTitle;
     // isSelectionModeActive.value =
     //     false; //Will be set to false when a new page builds.
@@ -57,18 +57,18 @@ class FileExplorerScreen extends StatelessWidget {
               builder: (context, selectedItems, child) {
                 return Expanded(
                   child: ListView.builder(
-                      itemCount: dirItems.length,
+                      itemCount: dirItemsList.length,
                       itemBuilder: ((context, index) {
                         Icon icon =
-                            fileTypeIcon(location: dirItems[index].path);
+                            fileTypeIcon(location: dirItemsList[index].path);
                         Color folderColor = Color.fromARGB(255, 230, 230, 230);
-                        if (selectedItems.contains(dirItems[index])) {
+                        if (selectedItems.contains(dirItemsList[index])) {
                           print('::::::selected items contains true:::::::');
                           folderColor = primaryColor.value;
                         }
 
                         return fileFolderCard(context,
-                            fileSystemEntity: dirItems[index],
+                            fileSystemEntity: dirItemsList[index],
                             icon: icon,
                             folderColor: folderColor);
                       })),
