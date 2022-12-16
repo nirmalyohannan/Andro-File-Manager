@@ -2,8 +2,6 @@ import 'package:androfilemanager/pages/splash_screen.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:flutter/material.dart';
 
-//todo: Change Android Data open folder (if) permisson error snackBar to Try Catch
-
 void main() {
   runApp(const AndroFileManager());
 }
