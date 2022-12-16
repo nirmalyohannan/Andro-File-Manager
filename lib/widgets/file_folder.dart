@@ -68,7 +68,7 @@ Widget fileFolderCard(BuildContext context,
               icon: const Icon(Icons.more_vert),
               iconSize: 30,
               onPressed: () {
-                fileFolderOptions(context);
+                fileFolderOptions(context, fileSystemEntity: fileSystemEntity);
               },
             ),
           ),

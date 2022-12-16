@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:androfilemanager/themes/colors.dart';
+import 'package:androfilemanager/widgets/options/properties_options.dart';
 import 'package:flutter/material.dart';
 
-void fileFolderOptions(BuildContext context) {
+void fileFolderOptions(BuildContext context,
+    {required FileSystemEntity fileSystemEntity}) {
   showDialog(
       context: context,
       builder: (context) {
@@ -14,7 +18,9 @@ void fileFolderOptions(BuildContext context) {
               option('Move', onPressed: () {}),
               option('Delete', onPressed: () {}),
               option('HideFile', onPressed: () {}),
-              option('Properties', onPressed: () {}),
+              option('Properties', onPressed: () {
+                propertiesOptions(context, path: fileSystemEntity.path);
+              }),
             ],
           ),
         );
