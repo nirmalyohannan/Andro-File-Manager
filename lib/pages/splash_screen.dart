@@ -36,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Hive.initFlutter();
     await Hive.openBox('appConfig');
     appConfigBox = Hive.box('appConfig');
+    showFolderSize = appConfigBox.get('showFolderSize', defaultValue: false);
     int red = appConfigBox.get('colorRed', defaultValue: androPrimeColor.red);
     int green =
         appConfigBox.get('colorGreen', defaultValue: androPrimeColor.green);

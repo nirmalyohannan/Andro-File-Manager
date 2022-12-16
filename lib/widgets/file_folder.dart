@@ -19,6 +19,7 @@ Widget fileFolderCard(BuildContext context,
   //     ValueNotifier(const Color.fromARGB(255, 230, 230, 230));
 
   String path = fileSystemEntity.path;
+  String folderSize = showFolderSize ? readableDirSizeCalc(path) : '';
   return InkWell(
       splashFactory: InkRipple.splashFactory,
       splashColor: primaryColor.value,
@@ -60,7 +61,7 @@ Widget fileFolderCard(BuildContext context,
           iconColor: Colors.black,
           leading: icon,
           title: Text(path.split('/').last),
-          subtitle: Text(readableDirSizeCalc(path).toString()),
+          subtitle: Text(folderSize),
           trailing: Visibility(
             visible: selectedItems.value.isEmpty,
             child: IconButton(

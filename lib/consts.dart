@@ -24,8 +24,9 @@ String?
 ValueNotifier<List<FileSystemEntity>> selectedItems =
     ValueNotifier([]); //File Selection
 
-//::::::::::::App Theme::::::::::::::::
+//::::::::::::App Config::::::::::::::::
 late Box appConfigBox;
+bool showFolderSize = false;
 //:::::::::::::::::::::::::::::::::::::
 
 //:::::::::App Directory:::::::::::::::
