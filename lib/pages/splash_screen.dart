@@ -34,12 +34,13 @@ class _SplashScreenState extends State<SplashScreen> {
     internalRootDir = '${await storage.getInternalPath()}/';
     //::::::Hive Database App Theme::::::::::
     await Hive.initFlutter();
-    await Hive.openBox('AppTheme');
-    appThemeBox = Hive.box('AppTheme');
-    int red = appThemeBox.get('colorRed', defaultValue: androPrimeColor.red);
+    await Hive.openBox('appConfig');
+    appConfigBox = Hive.box('appConfig');
+    int red = appConfigBox.get('colorRed', defaultValue: androPrimeColor.red);
     int green =
-        appThemeBox.get('colorGreen', defaultValue: androPrimeColor.green);
-    int blue = appThemeBox.get('colorBlue', defaultValue: androPrimeColor.blue);
+        appConfigBox.get('colorGreen', defaultValue: androPrimeColor.green);
+    int blue =
+        appConfigBox.get('colorBlue', defaultValue: androPrimeColor.blue);
     String colorHex = ColorConvert.rgbToHex(r: red, b: blue, g: green);
     colorHex = '0xFF${colorHex.replaceAll('#', '')}';
 

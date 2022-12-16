@@ -11,25 +11,20 @@ Stream<int> directorySizeCalcStream(String location) async* {
       List<FileSystemEntity> dirList =
           Directory(location).listSync(); //todo: Change Sync
       for (var i = 0; i < dirList.length; i++) {
-        if (FileSystemEntity.isDirectorySync(dirList[i].path)) {
-          directorySizeCalcStream(dirList[i].path).listen((event) {
-            size = size + event;
-          });
-          yield size;
-        } else {
-          File file = File(dirList[i].path);
-          file.length().then((value) {
-            size = size + value;
-          });
-          yield size;
-        }
+        File file = File(dirList[i].path);
+        size = size + file.lengthSync();
+
+        yield size;
+        print('$location::::::::::$size');
       }
     } on FileSystemException {
       yield -1;
     }
   } else {
     File file = File(location);
-    file.length().then((value) => size = size + value);
+
+    size = size + file.lengthSync();
+    yield size;
   }
 
   yield size;
@@ -39,7 +34,7 @@ Stream<String> readableDirSizeCalcStream(String location) async* {
   int size = 0;
   directorySizeCalcStream(location).listen((event) {
     size = event + size;
-    log('::::$location ==== $event');
+    log('<<<::::$location ==== $event');
   });
   if (size == 0) {
     yield 'Empty Folder';

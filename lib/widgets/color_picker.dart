@@ -44,9 +44,9 @@ Widget colorBox(Color color) {
 
       primaryColor.value = MsMaterialColor(int.parse(colorHex));
       primaryColor.notifyListeners();
-      await appThemeBox.put('colorRed', primaryColor.value.red);
-      await appThemeBox.put('colorGreen', primaryColor.value.green);
-      await appThemeBox.put('colorBlue', primaryColor.value.blue);
+      await appConfigBox.put('colorRed', primaryColor.value.red);
+      await appConfigBox.put('colorGreen', primaryColor.value.green);
+      await appConfigBox.put('colorBlue', primaryColor.value.blue);
     },
     child: Container(
       decoration: BoxDecoration(color: color),

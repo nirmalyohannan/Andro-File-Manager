@@ -25,7 +25,7 @@ ValueNotifier<List<FileSystemEntity>> selectedItems =
     ValueNotifier([]); //File Selection
 
 //::::::::::::App Theme::::::::::::::::
-late Box appThemeBox;
+late Box appConfigBox;
 //:::::::::::::::::::::::::::::::::::::
 
 //:::::::::App Directory:::::::::::::::
