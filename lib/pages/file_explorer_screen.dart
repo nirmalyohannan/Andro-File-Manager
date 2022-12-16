@@ -3,9 +3,9 @@ import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/dir_list_items.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/file_folder.dart';
+import 'package:androfilemanager/widgets/file_type_icon.dart';
 
 import 'package:flutter/material.dart';
-import '../widgets/file_type_Icon.dart';
 
 class FileExplorerScreen extends StatelessWidget {
   String location;
@@ -59,18 +59,31 @@ class FileExplorerScreen extends StatelessWidget {
                   child: ListView.builder(
                       itemCount: dirItemsList.length,
                       itemBuilder: ((context, index) {
-                        Icon icon =
-                            fileTypeIcon(location: dirItemsList[index].path);
                         Color folderColor = Color.fromARGB(255, 230, 230, 230);
                         if (selectedItems.contains(dirItemsList[index])) {
                           print('::::::selected items contains true:::::::');
                           folderColor = primaryColor.value;
                         }
 
-                        return fileFolderCard(context,
-                            fileSystemEntity: dirItemsList[index],
-                            icon: icon,
-                            folderColor: folderColor);
+                        return FutureBuilder(
+                            initialData: fileTypeIcon(
+                                location: dirItemsList[index].path),
+                            future: fileTypeThumbnail(
+                                location: dirItemsList[index].path),
+                            builder: (context, iconSnapshot) {
+                              Widget icon;
+                              if (iconSnapshot.connectionState !=
+                                  ConnectionState.done) {
+                                icon = fileTypeIcon(
+                                    location: dirItemsList[index].path);
+                              } else {
+                                icon = iconSnapshot.data!;
+                              }
+                              return fileFolderCard(context,
+                                  fileSystemEntity: dirItemsList[index],
+                                  icon: icon,
+                                  folderColor: folderColor);
+                            });
                       })),
                 );
               }),

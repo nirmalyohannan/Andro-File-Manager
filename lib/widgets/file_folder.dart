@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 
 Widget fileFolderCard(BuildContext context,
     {required FileSystemEntity fileSystemEntity,
-    required Icon icon,
+    required Widget icon,
     required Color folderColor}) {
   //Color folderColor = Color.fromARGB(255, 230, 230, 230);
   // ValueNotifier<Color> folderColor =
