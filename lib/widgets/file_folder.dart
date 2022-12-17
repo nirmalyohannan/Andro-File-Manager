@@ -29,13 +29,13 @@ Widget fileFolderCard(BuildContext context,
             selectedItems.value.add(fileSystemEntity);
             selectedItems.notifyListeners();
 
-            print(selectedItems.value);
+            // print(selectedItems.value);
           } else {
-            print('unselect');
+            // print('unselect');
             selectedItems.value.remove(fileSystemEntity);
             selectedItems.notifyListeners();
 
-            print(selectedItems.value);
+            // print(selectedItems.value);
           }
         } else {
           openDir(context, location: path);
@@ -46,9 +46,9 @@ Widget fileFolderCard(BuildContext context,
           selectedItems.value.add(fileSystemEntity);
           selectedItems.notifyListeners();
 
-          print(selectedItems.value);
+          // print(selectedItems.value);
         } else {
-          print('::::${selectedItems.value.remove(fileSystemEntity)}');
+          // print('::::${selectedItems.value.remove(fileSystemEntity)}');
           selectedItems.notifyListeners();
         }
       },

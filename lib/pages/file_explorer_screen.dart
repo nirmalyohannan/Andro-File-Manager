@@ -66,8 +66,6 @@ class FileExplorerScreen extends StatelessWidget {
                         }
 
                         return FutureBuilder(
-                            initialData: fileTypeIcon(
-                                location: dirItemsList[index].path),
                             future: fileTypeThumbnail(
                                 location: dirItemsList[index].path),
                             builder: (context, iconSnapshot) {

@@ -6,6 +6,15 @@ import 'package:androfilemanager/functions/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+//::::::::Icons Path:::::::::::::::::::::::
+String iconPathVideo = "assets/Icons/video.png";
+String iconPathAudio = "assets/Icons/audio.png";
+String iconPathImage = "assets/Icons/image.png";
+String iconPathDocument = "assets/Icons/document.png";
+String iconPathFolder = "assets/Icons/folder.png";
+String iconPathAPK = "assets/Icons/apk.png";
+
+//:::::::::File Types::::::::::::::::::
 List<String> audioTypes = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a'];
 List<String> videoTypes = ['mp4', 'mkv', 'avi', '3gp', 'm4v', 'webm', 'mov'];
 List<String> documentTypes = ['pdf', 'docx', 'ppt', 'pptx', 'mobi', 'epub'];
