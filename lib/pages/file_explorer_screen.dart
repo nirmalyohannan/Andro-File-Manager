@@ -45,7 +45,7 @@ class FileExplorerScreen extends StatelessWidget {
                   child: PopupMenuButton(
                     onSelected: (value) {
                       switch (value) {
-                        case 3:
+                        case 4:
                           selectedPropertiesOptions(context,
                               selectedItems: selectedItems);
                           break;
@@ -68,6 +68,10 @@ class FileExplorerScreen extends StatelessWidget {
                         ),
                         PopupMenuItem<int>(
                           value: 3,
+                          child: Text("Hide Selected Files"),
+                        ),
+                        PopupMenuItem<int>(
+                          value: 4,
                           child: Text("Properties"),
                         ),
                       ];

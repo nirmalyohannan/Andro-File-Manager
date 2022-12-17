@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/options/properties_options.dart';
+import 'package:androfilemanager/widgets/options/rename_options.dart';
 import 'package:flutter/material.dart';
 
 void fileFolderOptions(BuildContext context,
@@ -13,7 +14,9 @@ void fileFolderOptions(BuildContext context,
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              option('Rename', onPressed: () {}),
+              option('Rename', onPressed: () {
+                renameOptions(context, fileSystemEntity: fileSystemEntity);
+              }),
               option('Copy', onPressed: () {}),
               option('Move', onPressed: () {}),
               option('Delete', onPressed: () {}),
