@@ -4,19 +4,21 @@ import 'package:androfilemanager/functions/dir_list_items.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/file_folder.dart';
 import 'package:androfilemanager/widgets/file_type_icon.dart';
+import 'package:androfilemanager/widgets/selected_options/selected_properties_options.dart';
 
 import 'package:flutter/material.dart';
 
 class FileExplorerScreen extends StatelessWidget {
-  String location;
-  bool hideLocation;
-  FileExplorerScreen(
+  final String location;
+  final bool hideLocation;
+  const FileExplorerScreen(
       {super.key, required this.location, this.hideLocation = false});
 
   @override
   Widget build(BuildContext context) {
     List<FileSystemEntity> dirItemsList = dirListItems(location: location);
     final String directoryTitle;
+
     // isSelectionModeActive.value =
     //     false; //Will be set to false when a new page builds.
     selectedItems.value
@@ -34,6 +36,46 @@ class FileExplorerScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(directoryTitle),
         elevation: 0,
+        actions: [
+          ValueListenableBuilder(
+              valueListenable: selectedItems,
+              builder: (context, selectedItems, child) {
+                return Visibility(
+                  visible: selectedItems.isNotEmpty,
+                  child: PopupMenuButton(
+                    onSelected: (value) {
+                      switch (value) {
+                        case 3:
+                          selectedPropertiesOptions(context,
+                              selectedItems: selectedItems);
+                          break;
+                        default:
+                      }
+                    },
+                    itemBuilder: (context) {
+                      return const [
+                        PopupMenuItem<int>(
+                          value: 0,
+                          child: Text("Copy"),
+                        ),
+                        PopupMenuItem<int>(
+                          value: 1,
+                          child: Text("Move"),
+                        ),
+                        PopupMenuItem<int>(
+                          value: 2,
+                          child: Text("Delete"),
+                        ),
+                        PopupMenuItem<int>(
+                          value: 3,
+                          child: Text("Properties"),
+                        ),
+                      ];
+                    },
+                  ),
+                );
+              })
+        ],
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -56,33 +98,42 @@ class FileExplorerScreen extends StatelessWidget {
               valueListenable: selectedItems,
               builder: (context, selectedItems, child) {
                 return Expanded(
-                  child: ListView.builder(
-                      itemCount: dirItemsList.length,
-                      itemBuilder: ((context, index) {
-                        Color folderColor = Color.fromARGB(255, 230, 230, 230);
-                        if (selectedItems.contains(dirItemsList[index])) {
-                          print('::::::selected items contains true:::::::');
-                          folderColor = primaryColor.value;
-                        }
+                  child: dirItemsList.isEmpty
+                      ? const Center(
+                          child: Text(
+                            "Folder is Empty",
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: dirItemsList.length,
+                          itemBuilder: ((context, index) {
+                            Color folderColor =
+                                Color.fromARGB(255, 230, 230, 230);
+                            if (selectedItems.contains(dirItemsList[index])) {
+                              print(
+                                  '::::::selected items contains true:::::::');
+                              folderColor = primaryColor.value;
+                            }
 
-                        return FutureBuilder(
-                            future: fileTypeThumbnail(
-                                location: dirItemsList[index].path),
-                            builder: (context, iconSnapshot) {
-                              Widget icon;
-                              if (iconSnapshot.connectionState !=
-                                  ConnectionState.done) {
-                                icon = fileTypeIcon(
-                                    location: dirItemsList[index].path);
-                              } else {
-                                icon = iconSnapshot.data!;
-                              }
-                              return fileFolderCard(context,
-                                  fileSystemEntity: dirItemsList[index],
-                                  icon: icon,
-                                  folderColor: folderColor);
-                            });
-                      })),
+                            return FutureBuilder(
+                                future: fileTypeThumbnail(
+                                    location: dirItemsList[index].path),
+                                builder: (context, iconSnapshot) {
+                                  Widget icon;
+                                  if (iconSnapshot.connectionState !=
+                                      ConnectionState.done) {
+                                    icon = fileTypeIcon(
+                                        location: dirItemsList[index].path);
+                                  } else {
+                                    icon = iconSnapshot.data!;
+                                  }
+                                  return fileFolderCard(context,
+                                      fileSystemEntity: dirItemsList[index],
+                                      icon: icon,
+                                      folderColor: folderColor);
+                                });
+                          })),
                 );
               }),
         ],
