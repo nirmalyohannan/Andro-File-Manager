@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/options/properties_options.dart';
 import 'package:androfilemanager/widgets/options/rename_options.dart';
@@ -18,7 +19,12 @@ void fileFolderOptions(BuildContext context,
                 renameOptions(context, fileSystemEntity: fileSystemEntity);
               }),
               option('Copy', onPressed: () {}),
-              option('Move', onPressed: () {}),
+              option('Move', onPressed: () {
+                toMoveItems.value.clear();
+                toMoveItems.value.add(fileSystemEntity);
+                toMoveItems.notifyListeners();
+                Navigator.pop(context);
+              }),
               option('Delete', onPressed: () {}),
               option('HideFile', onPressed: () {}),
               option('Properties', onPressed: () {

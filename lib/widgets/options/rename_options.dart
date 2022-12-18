@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:androfilemanager/pages/file_explorer_screen.dart';
 import 'package:flutter/material.dart';
 
+//*! Alert: Add Validators for:
+//*! If the name already exists,
+//*! If the name contains special characters
+
 void renameOptions(BuildContext context,
     {required FileSystemEntity fileSystemEntity}) {
   showDialog(
@@ -11,7 +15,7 @@ void renameOptions(BuildContext context,
       List<String> temp = fileSystemEntity.path.split("/").last.split(".");
       List<String> temp2 = fileSystemEntity.path.split("/");
       temp2.removeLast();
-      String fileLocation = temp2.join("/");
+      String fileLocation = "${temp2.join("/")}/";
       String fileExtension;
       String fileName;
 
@@ -47,18 +51,25 @@ void renameOptions(BuildContext context,
               },
               onEditingComplete: () {
                 if (_formKey.currentState!.validate()) {
-                  print("$fileLocation/${controller.text}$fileExtension");
-                  fileSystemEntity.renameSync(
-                      "$fileLocation/${controller.text}$fileExtension");
+                  print("$fileLocation${controller.text}$fileExtension");
+                  try {
+                    fileSystemEntity.renameSync(
+                        "$fileLocation/${controller.text}$fileExtension");
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Rename Failed!")));
+                  }
+
                   textFormNode.unfocus();
                   Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            FileExplorerScreen(location: "$fileLocation/"),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          FileExplorerScreen(location: fileLocation),
+                    ),
+                  );
                 }
               },
             ),

@@ -4,7 +4,8 @@ import 'package:androfilemanager/functions/dir_list_items.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/file_folder.dart';
 import 'package:androfilemanager/widgets/file_type_icon.dart';
-import 'package:androfilemanager/widgets/selected_options/selected_properties_options.dart';
+import 'package:androfilemanager/widgets/options/move_button.dart';
+import 'package:androfilemanager/widgets/selected_options/selected_items_options.dart';
 
 import 'package:flutter/material.dart';
 
@@ -37,48 +38,8 @@ class FileExplorerScreen extends StatelessWidget {
         title: Text(directoryTitle),
         elevation: 0,
         actions: [
-          ValueListenableBuilder(
-              valueListenable: selectedItems,
-              builder: (context, selectedItems, child) {
-                return Visibility(
-                  visible: selectedItems.isNotEmpty,
-                  child: PopupMenuButton(
-                    onSelected: (value) {
-                      switch (value) {
-                        case 4:
-                          selectedPropertiesOptions(context,
-                              selectedItems: selectedItems);
-                          break;
-                        default:
-                      }
-                    },
-                    itemBuilder: (context) {
-                      return const [
-                        PopupMenuItem<int>(
-                          value: 0,
-                          child: Text("Copy"),
-                        ),
-                        PopupMenuItem<int>(
-                          value: 1,
-                          child: Text("Move"),
-                        ),
-                        PopupMenuItem<int>(
-                          value: 2,
-                          child: Text("Delete"),
-                        ),
-                        PopupMenuItem<int>(
-                          value: 3,
-                          child: Text("Hide Selected Files"),
-                        ),
-                        PopupMenuItem<int>(
-                          value: 4,
-                          child: Text("Properties"),
-                        ),
-                      ];
-                    },
-                  ),
-                );
-              })
+          moveButton(path: location),
+          selectedItemsOptions(),
         ],
       ),
       body: Column(

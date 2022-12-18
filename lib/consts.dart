@@ -32,6 +32,7 @@ String?
 
 ValueNotifier<List<FileSystemEntity>> selectedItems =
     ValueNotifier([]); //File Selection
+ValueNotifier<List<FileSystemEntity>> toMoveItems = ValueNotifier([]);
 
 //::::::::::::App Config::::::::::::::::
 late Box appConfigBox;
