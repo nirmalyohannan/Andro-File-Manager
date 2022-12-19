@@ -1,4 +1,3 @@
-import 'package:androfilemanager/themes/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../functions/open_dir.dart';

@@ -5,8 +5,6 @@ import 'package:androfilemanager/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import '../main.dart';
-
 Widget diskSpaceTile(BuildContext context, {bool isInternalStorage = true}) {
   String location;
   String title;
@@ -58,7 +56,7 @@ Widget diskSpaceTile(BuildContext context, {bool isInternalStorage = true}) {
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             color: mainColor,
-            borderRadius: BorderRadius.all(Radius.circular(15))),
+            borderRadius: const BorderRadius.all(Radius.circular(15))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -92,10 +90,12 @@ Widget diskSpaceTile(BuildContext context, {bool isInternalStorage = true}) {
                                 1 - (snapshot.data![0] / snapshot.data![1]),
                             lineHeight: 10,
                             width: MediaQuery.of(context).size.width - 100,
-                            backgroundColor: Color.fromARGB(150, 19, 31, 140),
-                            progressColor: Color.fromARGB(255, 19, 31, 140),
+                            backgroundColor:
+                                const Color.fromARGB(150, 19, 31, 140),
+                            progressColor:
+                                const Color.fromARGB(255, 19, 31, 140),
                           ),
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width - 100,
                             child: Row(
                               //why not Row taking full width?

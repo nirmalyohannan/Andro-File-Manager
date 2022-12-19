@@ -6,7 +6,6 @@ import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/diskspace_tile.dart';
 import 'package:androfilemanager/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../widgets/icon_tile.dart';
 

@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:androfilemanager/consts.dart';
-import 'package:androfilemanager/functions/authentication.dart';
+
 import 'package:androfilemanager/functions/permissions.dart';
-import 'package:androfilemanager/main.dart';
+
 import 'package:androfilemanager/pages/home_screen.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     androFilesInit();
   }

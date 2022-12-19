@@ -19,7 +19,7 @@ void renameOptions(BuildContext context,
       String fileExtension;
       String fileName;
 
-      GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+      GlobalKey<FormState> formKey = GlobalKey<FormState>();
       if (temp.length > 1) {
         fileExtension = ".${temp.removeLast()}";
         fileName = temp.join(".");
@@ -33,7 +33,7 @@ void renameOptions(BuildContext context,
         title: const Text("Rename"),
         actions: [
           Form(
-            key: _formKey,
+            key: formKey,
             child: TextFormField(
               controller: controller,
               focusNode: textFormNode,
@@ -45,12 +45,13 @@ void renameOptions(BuildContext context,
                 } else if (value == null) {
                   return "Name cannot be empty";
                 }
+                return null;
               },
               onChanged: (value) {
-                _formKey.currentState!.validate();
+                formKey.currentState!.validate();
               },
               onEditingComplete: () {
-                if (_formKey.currentState!.validate()) {
+                if (formKey.currentState!.validate()) {
                   print("$fileLocation${controller.text}$fileExtension");
                   try {
                     fileSystemEntity.renameSync(

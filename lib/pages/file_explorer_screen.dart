@@ -74,7 +74,7 @@ class FileExplorerScreen extends StatelessWidget {
                           itemCount: dirItemsList.length,
                           itemBuilder: ((context, index) {
                             Color folderColor =
-                                Color.fromARGB(255, 230, 230, 230);
+                                const Color.fromARGB(255, 230, 230, 230);
                             if (selectedItems.contains(dirItemsList[index])) {
                               print(
                                   '::::::selected items contains true:::::::');
