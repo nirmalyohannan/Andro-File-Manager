@@ -25,9 +25,9 @@ class FileExplorerScreen extends StatelessWidget {
     selectedItems.value
         .clear(); //selected items Will be cleared when a new page builds.
 
-    if (location == internalRootDir) {
+    if (location == internalRootDir || "$location/" == internalRootDir) {
       directoryTitle = 'Internal Storage';
-    } else if (location == externalRootDir) {
+    } else if (location == externalRootDir || "$location/" == externalRootDir) {
       directoryTitle = 'SD Card';
     } else {
       directoryTitle = location.split('/').last;

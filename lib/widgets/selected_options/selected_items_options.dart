@@ -1,24 +1,38 @@
 import 'package:androfilemanager/consts.dart';
+import 'package:androfilemanager/functions/file_operations.dart';
+import 'package:androfilemanager/pages/file_explorer_screen.dart';
 import 'package:androfilemanager/widgets/selected_options/selected_properties_options.dart';
 import 'package:flutter/material.dart';
 
 Widget selectedItemsOptions() {
   return ValueListenableBuilder(
       valueListenable: selectedItems,
-      builder: (context, selectedItems, child) {
+      builder: (context, items, child) {
         return Visibility(
-          visible: selectedItems.isNotEmpty,
+          visible: items.isNotEmpty,
           child: PopupMenuButton(
-            onSelected: (value) {
+            onSelected: (value) async {
               switch (value) {
                 case 1:
                   toMoveItems.value.clear();
-                  toMoveItems.value.addAll(selectedItems);
+                  toMoveItems.value.addAll(items);
                   toMoveItems.notifyListeners();
                   break;
+                case 2:
+                  await deleteOperation(context, deleteItems: items);
+                  selectedItems.value.clear();
+                  selectedItems.notifyListeners();
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushReplacement(context, MaterialPageRoute(
+                    builder: (context) {
+                      return FileExplorerScreen(
+                        location: items[0].parent.path,
+                      );
+                    },
+                  ));
+                  break;
                 case 4:
-                  selectedPropertiesOptions(context,
-                      selectedItems: selectedItems);
+                  selectedPropertiesOptions(context, selectedItems: items);
                   break;
                 default:
               }

@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:androfilemanager/consts.dart';
+import 'package:androfilemanager/functions/file_operations.dart';
+import 'package:androfilemanager/pages/file_explorer_screen.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/options/properties_options.dart';
 import 'package:androfilemanager/widgets/options/rename_options.dart';
@@ -25,7 +27,18 @@ void fileFolderOptions(BuildContext context,
                 toMoveItems.notifyListeners();
                 Navigator.pop(context);
               }),
-              option('Delete', onPressed: () {}),
+              option('Delete', onPressed: () async {
+                await deleteOperation(context, deleteItems: [fileSystemEntity]);
+                // ignore: use_build_context_synchronously
+                Navigator.pop(context);
+                // ignore: use_build_context_synchronously
+                Navigator.pushReplacement(context, MaterialPageRoute(
+                  builder: (context) {
+                    return FileExplorerScreen(
+                        location: fileSystemEntity.parent.path);
+                  },
+                ));
+              }),
               option('HideFile', onPressed: () {}),
               option('Properties', onPressed: () {
                 propertiesOptions(context, path: fileSystemEntity.path);

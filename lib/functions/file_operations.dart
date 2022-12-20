@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:androfilemanager/functions/alert_confirm.dart';
+import 'package:androfilemanager/functions/andro_snackbar.dart';
+import 'package:flutter/material.dart';
+
 void moveOperation(
     {required List<FileSystemEntity> moveItems, required String path}) {
   for (var element in moveItems) {
@@ -34,5 +38,23 @@ void moveOperation(
     if (element.existsSync()) {
       element.deleteSync();
     }
+  }
+}
+
+Future<void> deleteOperation(BuildContext context,
+    {required List<FileSystemEntity> deleteItems}) async {
+  if (await alertConfirm(context,
+      title: "Delete",
+      message: "Do you wish to Delete selected ${deleteItems.length} items")) {
+    for (var i = 0; i < deleteItems.length; i++) {
+      try {
+        deleteItems[i].deleteSync();
+      } catch (e) {
+        androSnackBar(context, message: "Problem Deleting 1 file or Folder");
+      }
+    }
+    androSnackBar(context, message: "Deletion Completed");
+  } else {
+    androSnackBar(context, message: "Deletion Canceled");
   }
 }

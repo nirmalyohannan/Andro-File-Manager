@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 Future<bool> alertConfirm(BuildContext context,
     {required String title, required String message}) async {
   bool reply = false;
+  TextStyle textStyle = const TextStyle(color: Colors.blue);
   await showDialog(
     context: context,
     builder: (context) {
@@ -15,13 +16,19 @@ Future<bool> alertConfirm(BuildContext context,
                 reply = true;
                 Navigator.pop(context);
               },
-              child: const Text("Yes")),
+              child: Text(
+                "Yes",
+                style: textStyle,
+              )),
           TextButton(
               onPressed: () {
                 reply = false;
                 Navigator.pop(context);
               },
-              child: const Text("No")),
+              child: Text(
+                "No",
+                style: textStyle,
+              )),
         ],
       );
     },
