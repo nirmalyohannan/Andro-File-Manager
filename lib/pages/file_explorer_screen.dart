@@ -4,6 +4,7 @@ import 'package:androfilemanager/functions/dir_list_items.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/file_folder.dart';
 import 'package:androfilemanager/widgets/file_type_icon.dart';
+import 'package:androfilemanager/widgets/options/copy_button.dart';
 import 'package:androfilemanager/widgets/options/move_button.dart';
 import 'package:androfilemanager/widgets/selected_options/selected_items_options.dart';
 
@@ -38,6 +39,7 @@ class FileExplorerScreen extends StatelessWidget {
         title: Text(directoryTitle),
         elevation: 0,
         actions: [
+          copyButton(path: location),
           moveButton(path: location),
           selectedItemsOptions(),
         ],

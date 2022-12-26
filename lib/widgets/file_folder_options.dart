@@ -20,8 +20,15 @@ void fileFolderOptions(BuildContext context,
               option('Rename', onPressed: () {
                 renameOptions(context, fileSystemEntity: fileSystemEntity);
               }),
-              option('Copy', onPressed: () {}),
+              option('Copy', onPressed: () {
+                toMoveItems.value.clear();
+                toCopyItems.value.clear();
+                toCopyItems.value.add(fileSystemEntity);
+                toCopyItems.notifyListeners();
+                Navigator.pop(context);
+              }),
               option('Move', onPressed: () {
+                toCopyItems.value.clear();
                 toMoveItems.value.clear();
                 toMoveItems.value.add(fileSystemEntity);
                 toMoveItems.notifyListeners();

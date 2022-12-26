@@ -74,8 +74,15 @@ Future<Widget> fileTypeThumbnail(
     } else if (documentTypes.contains(extension)) {
       return Icon(Icons.file_copy_outlined, size: iconSize);
     } else if (imageTypes.contains(extension)) {
+      File file;
+      try {
+        file = File(location);
+      } catch (e) {
+        print("Thumbnail not loaded");
+        file = File(iconPathImage);
+      }
       return Image.file(
-        File(location),
+        file,
         filterQuality: FilterQuality.none,
       );
     } else if (appTypes.contains(extension)) {

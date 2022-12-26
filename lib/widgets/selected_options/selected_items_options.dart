@@ -13,10 +13,19 @@ Widget selectedItemsOptions() {
           child: PopupMenuButton(
             onSelected: (value) async {
               switch (value) {
+                case 0:
+                  toMoveItems.value.clear();
+                  toCopyItems.value.clear();
+                  toCopyItems.value.addAll(items);
+                  toCopyItems.notifyListeners();
+                  toMoveItems.notifyListeners();
+                  break;
                 case 1:
+                  toCopyItems.value.clear();
                   toMoveItems.value.clear();
                   toMoveItems.value.addAll(items);
                   toMoveItems.notifyListeners();
+                  toCopyItems.notifyListeners();
                   break;
                 case 2:
                   await deleteOperation(context, deleteItems: items);
