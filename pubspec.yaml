@@ -49,6 +49,7 @@ dependencies:
   local_auth: ^2.1.2
   video_thumbnail: ^0.5.3
   shared_preferences: ^2.0.15
+  lottie: ^2.1.0
 
 
 
@@ -87,6 +88,7 @@ flutter:
     - assets/Icons/document.png
     - assets/Icons/folder.png
     - assets/Icons/apk.png
+    - assets/lottie/terms_and_conditions.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
