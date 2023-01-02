@@ -54,21 +54,30 @@ Future<Widget> fileTypeThumbnail(
       if (videoFile == null) {
         return Icon(Icons.video_file_outlined, size: iconSize);
       } else {
-        return Stack(
-          children: [
-            Image.memory(videoFile),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: SizedBox(
-                width: iconSize / 1.5,
-                child: Image.asset(
-                  iconPathVideo,
-                  fit: BoxFit.contain,
-                ),
+        return SizedBox(
+          height: 50,
+          width: 50,
+          child: Stack(
+            fit: StackFit.passthrough,
+            children: [
+              Image.memory(
+                videoFile,
+                filterQuality: FilterQuality.none,
+                fit: BoxFit.cover,
               ),
-            )
-          ],
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: SizedBox(
+                  width: iconSize / 1.5,
+                  child: Image.asset(
+                    iconPathVideo,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              )
+            ],
+          ),
         );
       }
     } else if (documentTypes.contains(extension)) {
@@ -81,9 +90,14 @@ Future<Widget> fileTypeThumbnail(
         print("Thumbnail not loaded");
         file = File(iconPathImage);
       }
-      return Image.file(
-        file,
-        filterQuality: FilterQuality.none,
+      return SizedBox(
+        height: 50,
+        width: 50,
+        child: Image.file(
+          file,
+          filterQuality: FilterQuality.none,
+          fit: BoxFit.cover,
+        ),
       );
     } else if (appTypes.contains(extension)) {
       return Image.asset(iconPathAPK);
