@@ -21,10 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              ValueListenableBuilder(
+        body: Column(
+          children: [
+            Expanded(
+              child: ValueListenableBuilder(
                 valueListenable: primaryColor,
                 builder: (context, mainColor, child) => Container(
                   decoration: BoxDecoration(
@@ -51,13 +51,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 40),
-                        child: Image.asset(
-                          // 'assets/logo/AndroFileManagerLogo.png',
-                          // 'assets/logo/AndroFilesLogo.png',
-                          'assets/logo/AndroLogo.png',
-                          width: MediaQuery.of(context).size.width / 1.7,
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(30),
+                          child: Image.asset(
+                            // 'assets/logo/AndroFileManagerLogo.png',
+                            // 'assets/logo/AndroFilesLogo.png',
+                            'assets/logo/AndroLogo.png',
+
+                            // width: MediaQuery.of(context).size.width / 1.7,
+                          ),
                         ),
                       ),
                       //:::::::::::Videos,Pictures,Musics,Downloads etc....Section::::::::::::
@@ -105,21 +108,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              //:::::::::Disk Space Section::::::::
-              const SizedBox(height: 10),
-              diskSpaceTile(context),
-              diskSpaceTile(context, isInternalStorage: false),
-              tileButton(
-                icon: Icons.lock,
-                title: 'Protected Files',
-                onPressed: () async {
-                  if (await authenticate()) {
-                    openDir(context, location: protectedDir.path);
-                  }
-                },
-              )
-            ],
-          ),
+            ),
+            //:::::::::Disk Space Section::::::::
+            const SizedBox(height: 10),
+            diskSpaceTile(context),
+            diskSpaceTile(context, isInternalStorage: false),
+            tileButton(
+              icon: Icons.lock,
+              title: 'Protected Files',
+              onPressed: () async {
+                if (await authenticate()) {
+                  openDir(context, location: protectedDir.path);
+                }
+              },
+            )
+          ],
         ),
       ),
     );
