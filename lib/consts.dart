@@ -33,13 +33,16 @@ String?
 ValueNotifier<List<FileSystemEntity>> selectedItems =
     ValueNotifier([]); //File Selection
 ValueNotifier<List<FileSystemEntity>> toMoveItems = ValueNotifier([]);
-//File Selection
+
 ValueNotifier<List<FileSystemEntity>> toCopyItems = ValueNotifier([]);
 
 //::::::::::::App Config::::::::::::::::
 late Box appConfigBox;
 bool showFolderSize = false;
 //:::::::::::::::::::::::::::::::::::::
+
+//::::::::::App Hidden Files::::::::::
+late Box appHideFiles;
 
 //:::::::::App Directory:::::::::::::::
 late Directory protectedDir;

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/alert_confirm.dart';
 import 'package:androfilemanager/functions/andro_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -106,4 +107,27 @@ void copyOperation(
           copyItems: Directory(element.path).listSync(), path: newPath);
     }
   }
+}
+
+void hideOperation({required List<FileSystemEntity> toHideFiles}) {
+  for (int index = 0; index < toHideFiles.length; index++) {
+    var file = toHideFiles[index];
+    String fileName = file.path.replaceAll('${file.parent.path}/', "");
+    String fileOriginalPath = file.parent.path;
+    appHideFiles.put(fileName, fileOriginalPath);
+  }
+  log("Files Path Saved to Database");
+  log("Hiding Files");
+  moveOperation(moveItems: toHideFiles, path: protectedDir.path);
+}
+
+void unHideOperation({required List<FileSystemEntity> toUnHideFiles}) {
+  for (int index = 0; index < toUnHideFiles.length; index++) {
+    var file = toUnHideFiles[index];
+    String fileName = file.path.replaceAll('${file.parent.path}/', "");
+    String fileOriginalPath =
+        appHideFiles.get(fileName, defaultValue: internalRootDir);
+    moveOperation(moveItems: [file], path: fileOriginalPath);
+  }
+  log("unHided Successfully!!");
 }

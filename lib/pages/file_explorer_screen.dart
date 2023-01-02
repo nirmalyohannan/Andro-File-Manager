@@ -12,8 +12,8 @@ import 'package:flutter/material.dart';
 
 class FileExplorerScreen extends StatelessWidget {
   final String location;
-  final bool hideLocation;
-  const FileExplorerScreen(
+  bool hideLocation;
+  FileExplorerScreen(
       {super.key, required this.location, this.hideLocation = false});
 
   @override
@@ -30,6 +30,9 @@ class FileExplorerScreen extends StatelessWidget {
       directoryTitle = 'Internal Storage';
     } else if (location == externalRootDir || "$location/" == externalRootDir) {
       directoryTitle = 'SD Card';
+    } else if (location.contains(protectedDir.path)) {
+      hideLocation = true;
+      directoryTitle = "Protected Files";
     } else {
       directoryTitle = location.split('/').last;
     }
