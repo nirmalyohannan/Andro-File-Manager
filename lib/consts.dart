@@ -41,6 +41,9 @@ late Box appConfigBox;
 bool showFolderSize = false;
 //:::::::::::::::::::::::::::::::::::::
 
+//:::::::::App Recent Files:::::::::::;
+late Box appRecentFiles;
+
 //::::::::::App Hidden Files::::::::::
 late Box appHideFiles;
 

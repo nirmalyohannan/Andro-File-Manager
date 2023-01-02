@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/dir_list_items.dart';
+import 'package:androfilemanager/pages/home_screen.dart';
+import 'package:androfilemanager/recent_files_database/recent_file_model.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/file_folder.dart';
 import 'package:androfilemanager/widgets/file_type_icon.dart';
@@ -10,49 +12,55 @@ import 'package:androfilemanager/widgets/selected_options/selected_items_options
 
 import 'package:flutter/material.dart';
 
-class FileExplorerScreen extends StatefulWidget {
-  final String location;
-  bool hideLocation;
-  FileExplorerScreen(
-      {super.key, required this.location, this.hideLocation = false});
+class RecentFilesScreen extends StatefulWidget {
+  RecentFilesScreen({
+    super.key,
+  });
 
   @override
-  State<FileExplorerScreen> createState() => _FileExplorerScreenState();
+  State<RecentFilesScreen> createState() => _RecentFilesScreenState();
 }
 
-class _FileExplorerScreenState extends State<FileExplorerScreen> {
+class _RecentFilesScreenState extends State<RecentFilesScreen> {
   @override
   Widget build(BuildContext context) {
-    List<FileSystemEntity> dirItemsList =
-        dirListItems(location: widget.location);
-    final String directoryTitle;
+    List<FileSystemEntity> dirItemsList = [];
+    for (RecentFile element in appRecentFiles.values) {
+      String parentPath = Directory(element.path).parent.path;
+      for (FileSystemEntity file in Directory(parentPath).listSync()) {
+        if (file.path == element.path) {
+          dirItemsList.add(file);
+        }
+      }
+    }
+    dirItemsList = dirItemsList.reversed.toList();
 
     // isSelectionModeActive.value =
     //     false; //Will be set to false when a new page builds.
     selectedItems.value
         .clear(); //selected items Will be cleared when a new page builds.
 
-    if (widget.location == internalRootDir ||
-        "${widget.location}/" == internalRootDir) {
-      directoryTitle = 'Internal Storage';
-    } else if (widget.location == externalRootDir ||
-        "${widget.location}/" == externalRootDir) {
-      directoryTitle = 'SD Card';
-    } else if (widget.location.contains(protectedDir.path)) {
-      widget.hideLocation = true;
-      directoryTitle = "Protected Files";
-    } else {
-      directoryTitle = widget.location.split('/').last;
-    }
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text(directoryTitle),
+        title: const Text("Recent Files"),
         elevation: 0,
         actions: [
-          copyButton(path: widget.location),
-          moveButton(path: widget.location),
           selectedItemsOptions(),
+          InkWell(
+            onTap: () async {
+              await appRecentFiles.clear();
+              Navigator.pushReplacement(context, routeRecentFiles());
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: const [Icon(Icons.cancel), Text("Clear")],
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          )
         ],
       ),
       body: Column(
@@ -61,7 +69,7 @@ class _FileExplorerScreenState extends State<FileExplorerScreen> {
           ValueListenableBuilder(
             valueListenable: primaryColor,
             builder: (context, mainColor, child) => Container(
-              padding: const EdgeInsets.only(left: 20, bottom: 10),
+              padding: const EdgeInsets.only(right: 20, bottom: 10),
               width: double.maxFinite,
               decoration: BoxDecoration(
                 color: mainColor,
@@ -69,7 +77,6 @@ class _FileExplorerScreenState extends State<FileExplorerScreen> {
                   bottom: Radius.circular(40),
                 ),
               ),
-              child: Text(widget.hideLocation ? '' : widget.location),
             ),
           ),
           ValueListenableBuilder(
@@ -79,7 +86,7 @@ class _FileExplorerScreenState extends State<FileExplorerScreen> {
                   child: dirItemsList.isEmpty
                       ? const Center(
                           child: Text(
-                            "Folder is Empty",
+                            "No Recent Files",
                             style: TextStyle(fontSize: 24),
                           ),
                         )

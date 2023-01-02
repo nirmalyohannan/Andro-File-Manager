@@ -15,6 +15,8 @@ import 'package:ncscolor/ncscolor.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../recent_files_database/recent_file_model.dart';
+
 late SharedPreferences prefs;
 
 class SplashScreen extends StatefulWidget {
@@ -50,9 +52,6 @@ class _SplashScreenState extends State<SplashScreen> {
       await Hive.initFlutter();
       await Hive.openBox('appConfig');
       appConfigBox = Hive.box('appConfig');
-//::::::Hive Databse Hidden Files:::::::::
-      await Hive.openBox('appHideFiles');
-      appHideFiles = Hive.box('appHideFiles');
       showFolderSize = appConfigBox.get('showFolderSize', defaultValue: false);
       int red = appConfigBox.get('colorRed', defaultValue: androPrimeColor.red);
       int green =
@@ -63,6 +62,14 @@ class _SplashScreenState extends State<SplashScreen> {
       colorHex = '0xFF${colorHex.replaceAll('#', '')}';
 
       primaryColor.value = MsMaterialColor(int.parse(colorHex));
+      //::::::Hive Databse Hidden Files:::::::::
+      await Hive.openBox('appHideFiles');
+      appHideFiles = Hive.box('appHideFiles');
+      //::::::Hive Database Recent Files::::::::
+      Hive.registerAdapter(RecentFileAdapter());
+      await Hive.openBox('appRecentFiles');
+      appRecentFiles = Hive.box('appRecentFiles');
+
 //::::::::::::::::::;;;;;
       List<Directory>? storagesList = await getExternalStorageDirectories();
       if (storagesList != null) {

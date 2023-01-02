@@ -2,15 +2,24 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:androfilemanager/consts.dart';
+import 'package:androfilemanager/recent_files_database/recent_file_model.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 
 import '../pages/file_explorer_screen.dart';
 
-openDir(BuildContext context, {required String location}) {
+openDir(BuildContext context,
+    {required String location, FileSystemEntity? fileSystemEntity}) {
   if (FileSystemEntity.isFileSync(location)) {
     log("You Clicked on a File"); //
+
     OpenFile.open(location);
+    appRecentFiles.add(RecentFile(
+      //Adding the file to Recent Files
+      path: location,
+      sizeInBytes: File(location).lengthSync(),
+      dateOpened: DateTime.now(),
+    ));
   } else {
     log("You Clicked on a Folder:::::$location"); //
     if (locationValidation(location, context)) {

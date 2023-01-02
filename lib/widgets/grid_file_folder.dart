@@ -4,13 +4,12 @@
 import 'dart:io';
 
 import 'package:androfilemanager/consts.dart';
-import 'package:androfilemanager/functions/dir_size_calc.dart';
 import 'package:androfilemanager/functions/open_dir.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/file_folder_options.dart';
 import 'package:flutter/material.dart';
 
-Widget fileFolderCard(BuildContext context,
+Widget gridFileFolderCard(BuildContext context,
     {required FileSystemEntity fileSystemEntity,
     required Widget icon,
     required Color folderColor}) {
@@ -19,7 +18,7 @@ Widget fileFolderCard(BuildContext context,
   //     ValueNotifier(const Color.fromARGB(255, 230, 230, 230));
 
   String path = fileSystemEntity.path;
-  String folderSize = showFolderSize ? readableDirSizeCalc(path) : '';
+  // String folderSize = showFolderSize ? readableDirSizeCalc(path) : '';
   return InkWell(
       splashFactory: InkRipple.splashFactory,
       splashColor: primaryColor.value,
@@ -57,21 +56,22 @@ Widget fileFolderCard(BuildContext context,
         decoration: BoxDecoration(
             color: folderColor,
             borderRadius: const BorderRadius.all(Radius.circular(15))),
-        child: ListTile(
-          iconColor: Colors.black,
-          leading: icon,
-          title: Text(path.split('/').last),
-          subtitle: Text(folderSize),
-          trailing: Visibility(
-            visible: selectedItems.value.isEmpty,
-            child: IconButton(
-              icon: const Icon(Icons.more_vert),
-              iconSize: 30,
-              onPressed: () {
-                fileFolderOptions(context, fileSystemEntity: fileSystemEntity);
-              },
+        child: Column(
+          children: [
+            icon,
+            Text(path.split('/').last),
+            Visibility(
+              visible: selectedItems.value.isEmpty,
+              child: IconButton(
+                icon: const Icon(Icons.more_vert),
+                iconSize: 30,
+                onPressed: () {
+                  fileFolderOptions(context,
+                      fileSystemEntity: fileSystemEntity);
+                },
+              ),
             ),
-          ),
+          ],
         ),
       )
       // ;})
