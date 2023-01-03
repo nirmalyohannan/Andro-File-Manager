@@ -28,15 +28,14 @@ Widget selectedItemsOptions() {
                   toCopyItems.notifyListeners();
                   break;
                 case 2:
+                  String parentPath = items[0].parent.path;
                   await deleteOperation(context, deleteItems: items);
                   selectedItems.value.clear();
                   selectedItems.notifyListeners();
                   // ignore: use_build_context_synchronously
                   Navigator.pushReplacement(context, MaterialPageRoute(
                     builder: (context) {
-                      return FileExplorerScreen(
-                        location: items[0].parent.path,
-                      );
+                      return FileExplorerScreen(location: parentPath);
                     },
                   ));
                   break;
