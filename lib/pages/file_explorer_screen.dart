@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/dir_list_items.dart';
+import 'package:androfilemanager/functions/new_folder.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/file_folder.dart';
 import 'package:androfilemanager/widgets/file_type_icon.dart';
@@ -21,6 +22,15 @@ class FileExplorerScreen extends StatefulWidget {
 }
 
 class _FileExplorerScreenState extends State<FileExplorerScreen> {
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    selectedItems.value.clear();
+    super.dispose();
+    Future.delayed(const Duration(milliseconds: 50))
+        .then((value) => selectedItems.notifyListeners());
+  }
+
   @override
   Widget build(BuildContext context) {
     List<FileSystemEntity> dirItemsList =
@@ -61,7 +71,7 @@ class _FileExplorerScreenState extends State<FileExplorerScreen> {
           ValueListenableBuilder(
             valueListenable: primaryColor,
             builder: (context, mainColor, child) => Container(
-              padding: const EdgeInsets.only(left: 20, bottom: 10),
+              padding: const EdgeInsets.only(left: 20, bottom: 10, right: 20),
               width: double.maxFinite,
               decoration: BoxDecoration(
                 color: mainColor,
@@ -69,7 +79,27 @@ class _FileExplorerScreenState extends State<FileExplorerScreen> {
                   bottom: Radius.circular(40),
                 ),
               ),
-              child: Text(widget.hideLocation ? '' : widget.location),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                      child: Text(widget.hideLocation ? '' : widget.location)),
+                  InkWell(
+                    onTap: () {
+                      createNewFolder(context, widget.location);
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) {
+                          return FileExplorerScreen(location: widget.location);
+                        },
+                      ));
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [Icon(Icons.add), Text("New Folder")],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           ValueListenableBuilder(
