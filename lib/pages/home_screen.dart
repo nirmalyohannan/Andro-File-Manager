@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 import '../widgets/icon_tile.dart';
+import 'file_type_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -105,30 +106,86 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisCount: 3,
                             padding: const EdgeInsets.all(10),
                             children: <Widget>[
-                              iconTile(context,
-                                  iconData: Icons.video_file_outlined,
-                                  title: 'Videos',
-                                  location: '${internalRootDir}Movies'),
+                              iconTile(
+                                context,
+                                iconData: Icons.video_file_outlined,
+                                title: 'Videos',
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return FileTypeScreen(
+                                        directoryTitle: "Videos",
+                                        typesList: videoTypes,
+                                      );
+                                    },
+                                  ));
+                                },
+                              ),
                               iconTile(context,
                                   iconData: Icons.image_outlined,
-                                  title: 'Pictures',
-                                  location: '${internalRootDir}Pictures'),
-                              iconTile(context,
-                                  iconData: Icons.music_note_outlined,
-                                  title: 'Musics',
-                                  location: '${internalRootDir}Music'),
+                                  title: 'Pictures', onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return FileTypeScreen(
+                                      directoryTitle: "Images",
+                                      typesList: imageTypes,
+                                    );
+                                  },
+                                ));
+                              }),
+                              iconTile(
+                                context,
+                                iconData: Icons.music_note_outlined,
+                                title: 'Musics',
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return FileTypeScreen(
+                                        directoryTitle: "Music",
+                                        typesList: audioTypes,
+                                      );
+                                    },
+                                  ));
+                                },
+                              ),
                               iconTile(context,
                                   iconData: Icons.download,
-                                  title: 'Downloads',
-                                  location: '${internalRootDir}Download'),
+                                  title: 'Downloads', onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return FileExplorerScreen(
+                                      location: '${internalRootDir}Download',
+                                    );
+                                  },
+                                ));
+                              }),
                               iconTile(context,
                                   iconData: Icons.file_copy,
-                                  title: 'Documents',
-                                  location: '${internalRootDir}Documents'),
-                              iconTile(context,
-                                  iconData: Icons.android,
-                                  title: 'Apps',
-                                  location: '${internalRootDir}Download'),
+                                  title: 'Documents', onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return FileTypeScreen(
+                                      directoryTitle: "Documents",
+                                      typesList: documentTypes,
+                                    );
+                                  },
+                                ));
+                              }),
+                              iconTile(
+                                context,
+                                iconData: Icons.android,
+                                title: 'Apps',
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return FileTypeScreen(
+                                        directoryTitle: "App apks",
+                                        typesList: appTypes,
+                                      );
+                                    },
+                                  ));
+                                },
+                              ),
                             ],
                           ),
                         ),
