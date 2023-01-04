@@ -1,4 +1,5 @@
 import 'package:androfilemanager/consts.dart';
+import 'package:androfilemanager/pages/privacy_policy_screen.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:androfilemanager/widgets/color_picker.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,15 @@ class _SettingScreenState extends State<SettingScreen> {
               icon: Icons.document_scanner,
               title: 'About App',
             ),
+            tileButton(
+              icon: Icons.privacy_tip,
+              title: "Privacy Policy",
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PrivacyPolicyScreen(),
+                  )),
+            )
           ],
         ),
       ),
