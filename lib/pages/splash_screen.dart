@@ -7,12 +7,14 @@ import 'package:androfilemanager/functions/permissions.dart';
 
 import 'package:androfilemanager/pages/home_screen.dart';
 import 'package:androfilemanager/pages/terms_and_conditions_screen.dart';
+import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ms_material_color/ms_material_color.dart';
 import 'package:ncscolor/ncscolor.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../recent_files_database/recent_file_model.dart';
@@ -61,7 +63,8 @@ class _SplashScreenState extends State<SplashScreen> {
       String colorHex = ColorConvert.rgbToHex(r: red, b: blue, g: green);
       colorHex = '0xFF${colorHex.replaceAll('#', '')}';
 
-      primaryColor.value = MsMaterialColor(int.parse(colorHex));
+      context.read<ColorThemes>().primaryColor =
+          MsMaterialColor(int.parse(colorHex));
       //::::::Hive Databse Hidden Files:::::::::
       await Hive.openBox('appHideFiles');
       appHideFiles = Hive.box('appHideFiles');
@@ -76,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (storagesList.length > 1) {
           externalStorageExists = true;
           externalRootDir = storagesList[1].path.replaceAll(
-              'Android/data/com.example.androfilemanager/files', '');
+              'Android/data/com.nirmalyohannan.AndroFiles/files', '');
           log("::::EXT PATH::::: $externalRootDir:::");
         }
       }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 MaterialColor androPrimeColor = MaterialColor(0xFFE5E7FF, color);
 
-ValueNotifier<MaterialColor> primaryColor = ValueNotifier(androPrimeColor);
+// ValueNotifier<MaterialColor> primaryColor = ValueNotifier(androPrimeColor);
 
 Map<int, Color> color = {
   50: const Color.fromRGBO(229, 231, 255, .1),

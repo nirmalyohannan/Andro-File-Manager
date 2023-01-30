@@ -1,17 +1,17 @@
-import 'package:androfilemanager/themes/colors.dart';
+import 'package:androfilemanager/states.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 Widget tileButton(
     {required IconData icon, required String title, Function()? onPressed}) {
   return InkWell(
     onTap: onPressed ?? () {},
-    child: ValueListenableBuilder(
-      valueListenable: primaryColor,
-      builder: (context, mainColor, child) => Container(
+    child: Consumer<ColorThemes>(
+      builder: (context, colorThemes, child) => Container(
         padding: const EdgeInsets.all(5),
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: mainColor,
+            color: colorThemes.primaryColor,
             borderRadius: const BorderRadius.all(Radius.circular(10))),
         child: Row(
           children: [

@@ -34,7 +34,7 @@ bool checkFileType(
 
   String extensionName = fileSystemEntity.path.split("/").last.split(".").last;
   for (var type in typesList) {
-    if (type.contains(extensionName)) {
+    if (type == extensionName) {
       isFileType = true;
       break;
     }

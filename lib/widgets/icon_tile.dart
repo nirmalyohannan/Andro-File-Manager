@@ -1,8 +1,4 @@
-import 'package:androfilemanager/consts.dart';
-import 'package:androfilemanager/pages/file_type_screen.dart';
 import 'package:flutter/material.dart';
-
-import '../functions/open_dir.dart';
 
 Widget iconTile(
   BuildContext context, {

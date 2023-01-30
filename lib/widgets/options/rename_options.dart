@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:androfilemanager/pages/file_explorer_screen.dart';
@@ -52,7 +53,7 @@ void renameOptions(BuildContext context,
               },
               onEditingComplete: () {
                 if (formKey.currentState!.validate()) {
-                  print("$fileLocation${controller.text}$fileExtension");
+                  log("$fileLocation${controller.text}$fileExtension");
                   try {
                     fileSystemEntity.renameSync(
                         "$fileLocation/${controller.text}$fileExtension");

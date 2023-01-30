@@ -1,8 +1,9 @@
 import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/pages/privacy_policy_screen.dart';
-import 'package:androfilemanager/themes/colors.dart';
+import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/widgets/color_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/tile_button.dart';
 
@@ -20,11 +21,10 @@ class _SettingScreenState extends State<SettingScreen> {
       child: Scaffold(
         body: Column(
           children: [
-            ValueListenableBuilder(
-              valueListenable: primaryColor,
-              builder: (context, mainColor, child) => Container(
+            Consumer<ColorThemes>(
+              builder: (context, colorThemes, child) => Container(
                 decoration: BoxDecoration(
-                    color: mainColor,
+                    color: colorThemes.primaryColor,
                     borderRadius: const BorderRadius.vertical(
                         bottom: Radius.circular(40))),
                 child: Container(

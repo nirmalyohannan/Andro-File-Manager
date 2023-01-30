@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:androfilemanager/functions/storage.dart';
-import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 //::::::::Icons Path:::::::::::::::::::::::
@@ -13,6 +12,8 @@ String iconPathImage = "assets/Icons/image.png";
 String iconPathDocument = "assets/Icons/document.png";
 String iconPathFolder = "assets/Icons/folder.png";
 String iconPathAPK = "assets/Icons/apk.png";
+//::::::::Lotties:::::::::::::::::::::::::::::
+String lottieImageLoading = "assets/lottie/imageLoading.json";
 
 //:::::::::File Types::::::::::::::::::
 List<String> audioTypes = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a'];
@@ -29,12 +30,6 @@ bool externalStorageExists = false;
 String?
     externalRootDir; //external storage path may vary for devices, so have to find using function on app launch
 //:::::::::::::::::::::::::::::::::::::::::::::::::::
-
-ValueNotifier<List<FileSystemEntity>> selectedItems =
-    ValueNotifier([]); //File Selection
-ValueNotifier<List<FileSystemEntity>> toMoveItems = ValueNotifier([]);
-
-ValueNotifier<List<FileSystemEntity>> toCopyItems = ValueNotifier([]);
 
 //::::::::::::App Config::::::::::::::::
 late Box appConfigBox;

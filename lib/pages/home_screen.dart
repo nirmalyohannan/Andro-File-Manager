@@ -6,13 +6,12 @@ import 'package:androfilemanager/functions/open_dir.dart';
 import 'package:androfilemanager/pages/file_explorer_screen.dart';
 import 'package:androfilemanager/pages/recent_files_screen.dart';
 import 'package:androfilemanager/pages/settings_screen.dart';
-import 'package:androfilemanager/recent_files_database/recent_file_model.dart';
-import 'package:androfilemanager/themes/colors.dart';
+import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/widgets/diskspace_tile.dart';
 import 'package:androfilemanager/widgets/tile_button.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:provider/provider.dart';
 import '../widgets/icon_tile.dart';
 import 'file_type_screen.dart';
 
@@ -39,11 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               Expanded(
-                child: ValueListenableBuilder(
-                  valueListenable: primaryColor,
-                  builder: (context, mainColor, child) => Container(
+                child: Consumer<ColorThemes>(
+                  builder: (context, colorThemes, child) => Container(
                     decoration: BoxDecoration(
-                        color: mainColor,
+                        color: colorThemes.primaryColor,
                         borderRadius: const BorderRadius.vertical(
                             bottom: Radius.circular(40))),
                     child: Column(
@@ -218,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
 Route routeRecentFiles() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) =>
-        RecentFilesScreen(),
+        const RecentFilesScreen(),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0.0, -1.0);
       const end = Offset.zero;

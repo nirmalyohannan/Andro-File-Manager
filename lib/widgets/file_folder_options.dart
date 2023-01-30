@@ -3,33 +3,43 @@ import 'dart:io';
 import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/file_operations.dart';
 import 'package:androfilemanager/pages/file_explorer_screen.dart';
-import 'package:androfilemanager/themes/colors.dart';
+import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/widgets/options/properties_options.dart';
 import 'package:androfilemanager/widgets/options/rename_options.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void fileFolderOptions(BuildContext context,
     {required FileSystemEntity fileSystemEntity}) {
   ///::::::::Normal Options Declared into a variable::::::::::::
   List<Widget> normalOptions = [
-    option('Rename', onPressed: () {
+    option(context, 'Rename', onPressed: () {
       renameOptions(context, fileSystemEntity: fileSystemEntity);
     }),
-    option('Copy', onPressed: () {
-      toMoveItems.value.clear();
-      toCopyItems.value.clear();
-      toCopyItems.value.add(fileSystemEntity);
-      toCopyItems.notifyListeners();
+    option(context, 'Copy', onPressed: () {
+      context.read<ToMoveItems>().clear();
+
+      // toMoveItems.value.clear();
+      context.read<ToCopyItems>().clear();
+      // toCopyItems.value.clear();
+      context.read<ToCopyItems>().add(fileSystemEntity);
+      // toCopyItems.value.add(fileSystemEntity);
+      // toCopyItems.notifyListeners();
       Navigator.pop(context);
     }),
-    option('Move', onPressed: () {
-      toCopyItems.value.clear();
-      toMoveItems.value.clear();
-      toMoveItems.value.add(fileSystemEntity);
-      toMoveItems.notifyListeners();
+    option(context, 'Move', onPressed: () {
+      context.read<ToCopyItems>().clear();
+      // toCopyItems.value.clear();
+      context.read<ToMoveItems>().clear();
+
+      // toMoveItems.value.clear();
+      context.read<ToMoveItems>().add(fileSystemEntity);
+
+      // toMoveItems.value.add(fileSystemEntity);
+      // toMoveItems.notifyListeners();
       Navigator.pop(context);
     }),
-    option('Delete', onPressed: () async {
+    option(context, 'Delete', onPressed: () async {
       await deleteOperation(context, deleteItems: [fileSystemEntity]);
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
@@ -40,7 +50,7 @@ void fileFolderOptions(BuildContext context,
         },
       ));
     }),
-    option('HideFile', onPressed: () {
+    option(context, 'HideFile', onPressed: () {
       hideOperation(
           toHideFiles: [fileSystemEntity]); //todo: Working on Hide Files
       Navigator.pop(context);
@@ -52,13 +62,13 @@ void fileFolderOptions(BuildContext context,
         }),
       );
     }),
-    option('Properties', onPressed: () {
+    option(context, 'Properties', onPressed: () {
       propertiesOptions(context, path: fileSystemEntity.path);
     }),
   ];
 
   List<Widget> protectedOptions = [
-    option('UnHide', onPressed: () {
+    option(context, 'UnHide', onPressed: () {
       unHideOperation(toUnHideFiles: [fileSystemEntity]);
       Navigator.pop(context);
       Navigator.pushReplacement(context, MaterialPageRoute(
@@ -67,21 +77,31 @@ void fileFolderOptions(BuildContext context,
         },
       ));
     }),
-    option('Copy', onPressed: () {
-      toMoveItems.value.clear();
-      toCopyItems.value.clear();
-      toCopyItems.value.add(fileSystemEntity);
-      toCopyItems.notifyListeners();
+    option(context, 'Copy', onPressed: () {
+      context.read<ToMoveItems>().clear();
+
+      // toMoveItems.value.clear();
+      context.read<ToCopyItems>().clear();
+      // toCopyItems.value.clear();
+      context.read<ToCopyItems>().add(fileSystemEntity);
+      // toCopyItems.value.add(fileSystemEntity);
+      // toCopyItems.notifyListeners();
       Navigator.pop(context);
     }),
-    option('Move', onPressed: () {
-      toCopyItems.value.clear();
-      toMoveItems.value.clear();
-      toMoveItems.value.add(fileSystemEntity);
-      toMoveItems.notifyListeners();
+    option(context, 'Move', onPressed: () {
+      context.read<ToCopyItems>().clear();
+
+      // toCopyItems.value.clear();
+      context.read<ToMoveItems>().clear();
+
+      // toMoveItems.value.clear();
+      context.read<ToMoveItems>().add(fileSystemEntity);
+
+      // toMoveItems.value.add(fileSystemEntity);
+      // toMoveItems.notifyListeners();
       Navigator.pop(context);
     }),
-    option('Delete', onPressed: () async {
+    option(context, 'Delete', onPressed: () async {
       await deleteOperation(context, deleteItems: [fileSystemEntity]);
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
@@ -92,7 +112,7 @@ void fileFolderOptions(BuildContext context,
         },
       ));
     }),
-    option('Properties', onPressed: () {
+    option(context, 'Properties', onPressed: () {
       propertiesOptions(context, path: fileSystemEntity.path);
     }),
   ];
@@ -110,9 +130,10 @@ void fileFolderOptions(BuildContext context,
       });
 }
 
-Widget option(String title, {required Function onPressed}) {
+Widget option(BuildContext context, String title,
+    {required Function onPressed}) {
   return InkWell(
-    splashColor: primaryColor.value,
+    splashColor: context.read<ColorThemes>().primaryColor,
     onTap: () {
       onPressed();
     },

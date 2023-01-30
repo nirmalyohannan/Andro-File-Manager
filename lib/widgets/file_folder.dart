@@ -6,9 +6,10 @@ import 'dart:io';
 import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/dir_size_calc.dart';
 import 'package:androfilemanager/functions/open_dir.dart';
-import 'package:androfilemanager/themes/colors.dart';
+import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/widgets/file_folder_options.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 Widget fileFolderCard(BuildContext context,
     {required FileSystemEntity fileSystemEntity,
@@ -22,18 +23,23 @@ Widget fileFolderCard(BuildContext context,
   String folderSize = showFolderSize ? readableDirSizeCalc(path) : '';
   return InkWell(
       splashFactory: InkRipple.splashFactory,
-      splashColor: primaryColor.value,
+      splashColor: context.read<ColorThemes>().primaryColor,
       onTap: () {
-        if (selectedItems.value.isNotEmpty) {
-          if (selectedItems.value.contains(fileSystemEntity) == false) {
-            selectedItems.value.add(fileSystemEntity);
-            selectedItems.notifyListeners();
+        List<FileSystemEntity> selectedItems =
+            context.read<SelectedItems>().items;
+
+        if (selectedItems.isNotEmpty) {
+          if (selectedItems.contains(fileSystemEntity) == false) {
+            selectedItems.add(fileSystemEntity);
+            context.read<SelectedItems>().items = selectedItems;
+            context.read<SelectedItems>().notify();
 
             // print(selectedItems.value);
           } else {
             // print('unselect');
-            selectedItems.value.remove(fileSystemEntity);
-            selectedItems.notifyListeners();
+            selectedItems.remove(fileSystemEntity);
+            context.read<SelectedItems>().items = selectedItems;
+            context.read<SelectedItems>().notify();
 
             // print(selectedItems.value);
           }
@@ -42,14 +48,18 @@ Widget fileFolderCard(BuildContext context,
         }
       },
       onLongPress: () {
-        if (selectedItems.value.contains(fileSystemEntity) == false) {
-          selectedItems.value.add(fileSystemEntity);
-          selectedItems.notifyListeners();
+        List<FileSystemEntity> selectedItems =
+            context.read<SelectedItems>().items;
+        if (selectedItems.contains(fileSystemEntity) == false) {
+          selectedItems.add(fileSystemEntity);
+          context.read<SelectedItems>().items = selectedItems;
+          context.read<SelectedItems>().notify();
 
           // print(selectedItems.value);
         } else {
           // print('::::${selectedItems.value.remove(fileSystemEntity)}');
-          selectedItems.notifyListeners();
+          context.read<SelectedItems>().items = selectedItems;
+          context.read<SelectedItems>().notify();
         }
       },
       child: Container(
@@ -63,7 +73,7 @@ Widget fileFolderCard(BuildContext context,
           title: Text(path.split('/').last),
           subtitle: Text(folderSize),
           trailing: Visibility(
-            visible: selectedItems.value.isEmpty,
+            visible: context.read<SelectedItems>().items.isEmpty,
             child: IconButton(
               icon: const Icon(Icons.more_vert),
               iconSize: 30,

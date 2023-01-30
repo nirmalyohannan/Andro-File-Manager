@@ -17,7 +17,7 @@ Stream<int> directorySizeCalcStream(String location) async* {
         size = size + file.lengthSync();
 
         yield size;
-        print('$location::::::::::$size');
+        log('$location::::::::::$size');
       }
     } on FileSystemException {
       yield -1;

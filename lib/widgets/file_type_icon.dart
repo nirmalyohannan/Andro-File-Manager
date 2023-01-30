@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../consts.dart';
@@ -86,18 +88,24 @@ Future<Widget> fileTypeThumbnail(
       File file;
       try {
         file = File(location);
+        if (file.lengthSync() == 0) {
+          throw StateError("The file is empty as an image");
+        }
+      } on StateError {
+        return noImagePreviewWidget();
       } catch (e) {
-        print("Thumbnail not loaded");
+        log("Thumbnail not loaded");
+        log(e.toString());
         file = File(iconPathImage);
       }
       return SizedBox(
         height: 50,
         width: 50,
-        child: Image.file(
-          file,
-          filterQuality: FilterQuality.none,
-          fit: BoxFit.cover,
-        ),
+        child: Image.file(file,
+            filterQuality: FilterQuality.none,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) =>
+                noImagePreviewWidget()),
       );
     } else if (appTypes.contains(extension)) {
       return Image.asset(iconPathAPK);
@@ -105,4 +113,20 @@ Future<Widget> fileTypeThumbnail(
       return Icon(Icons.file_copy, size: iconSize);
     }
   }
+}
+
+Stack noImagePreviewWidget() {
+  return Stack(
+    alignment: AlignmentDirectional.bottomEnd,
+    children: [
+      Opacity(
+        opacity: 0.4,
+        child: LottieBuilder.asset(
+          lottieImageLoading,
+          width: 50,
+        ),
+      ),
+      const Icon(Icons.cancel)
+    ],
+  );
 }

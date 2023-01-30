@@ -1,9 +1,10 @@
 import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/format_file_size.dart';
 import 'package:androfilemanager/pages/file_explorer_screen.dart';
-import 'package:androfilemanager/themes/colors.dart';
+import 'package:androfilemanager/states.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 Widget diskSpaceTile(BuildContext context, {bool isInternalStorage = true}) {
   String location;
@@ -39,7 +40,7 @@ Widget diskSpaceTile(BuildContext context, {bool isInternalStorage = true}) {
     return const Text("No External Storage");
   }
   return InkWell(
-    splashColor: primaryColor.value,
+    splashColor: context.read<ColorThemes>().primaryColor,
     onTap: () {
       Navigator.push(context, MaterialPageRoute(
         builder: (context) {
@@ -49,13 +50,12 @@ Widget diskSpaceTile(BuildContext context, {bool isInternalStorage = true}) {
         },
       ));
     },
-    child: ValueListenableBuilder(
-      valueListenable: primaryColor,
-      builder: (context, mainColor, child) => Container(
+    child: Consumer<ColorThemes>(
+      builder: (context, colorThemes, child) => Container(
         padding: const EdgeInsets.all(5),
         margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: mainColor,
+            color: colorThemes.primaryColor,
             borderRadius: const BorderRadius.all(Radius.circular(15))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

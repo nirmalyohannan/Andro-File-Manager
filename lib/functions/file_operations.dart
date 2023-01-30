@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 void moveOperation(
     {required List<FileSystemEntity> moveItems, required String path}) {
   for (var element in moveItems) {
-    String newPath = '${path}/${element.path.split("/").last}';
+    String newPath = '$path/${element.path.split("/").last}';
     newPath = newPath.replaceAll("//", "/");
     int num = 1;
     while (Directory(newPath).existsSync() || File(newPath).existsSync()) {
@@ -21,26 +21,26 @@ void moveOperation(
         newPath = '$path/${element.path.split("/").last}($num)';
       }
 
-      print("path already exists Changing Name:: $newPath");
+      log("path already exists Changing Name:: $newPath");
       num++;
     }
     //-----------------------------------------------
     if (FileSystemEntity.isFileSync(element.path)) {
-      print("Moving a File: ${element.path}");
-      print("to: $newPath");
+      log("Moving a File: ${element.path}");
+      log("to: $newPath");
       try {
         element.renameSync(newPath);
       } on FileSystemException {
-        print("Move Failed: Trying Copy and Delete Method");
+        log("Move Failed: Trying Copy and Delete Method");
         File(element.path).copySync(newPath);
         element.deleteSync();
       } catch (e) {
-        print("Move Failed!!!!");
+        log("Move Failed!!!!");
       }
     } //------------If it is a folder---------------------
     else {
-      print("Moving a folder: ${element.path}");
-      print("to: $newPath");
+      log("Moving a folder: ${element.path}");
+      log("to: $newPath");
       Directory(newPath).createSync();
       moveOperation(
           moveItems: Directory(element.path).listSync(), path: newPath);
@@ -73,7 +73,7 @@ void copyOperation(
     {required List<FileSystemEntity> copyItems, required String path}) {
   for (var element in copyItems) {
     log("Copying Operation::::");
-    String newPath = '${path}/${element.path.split("/").last}';
+    String newPath = '$path/${element.path.split("/").last}';
     newPath = newPath.replaceAll("//", "/");
     int num = 1;
 
@@ -86,22 +86,22 @@ void copyOperation(
         newPath = '$path/${element.path.split("/").last}($num)';
       }
 
-      print("path already exists Changing Name:: $newPath");
+      log("path already exists Changing Name:: $newPath");
       num++;
     }
     //-----------------------------------------------
     if (FileSystemEntity.isFileSync(element.path)) {
-      print("Copying a File: ${element.path}");
-      print("to: $newPath");
+      log("Copying a File: ${element.path}");
+      log("to: $newPath");
       try {
         File(element.path).copySync(newPath);
       } catch (e) {
-        print("copy Failed!!!!");
+        log("copy Failed!!!!");
       }
     } //------------If it is a folder---------------------
     else {
-      print("Copying a folder: ${element.path}");
-      print("to: $newPath");
+      log("Copying a folder: ${element.path}");
+      log("to: $newPath");
       Directory(newPath).createSync();
       copyOperation(
           copyItems: Directory(element.path).listSync(), path: newPath);
