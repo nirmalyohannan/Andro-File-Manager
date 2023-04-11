@@ -8,6 +8,7 @@ import 'package:androfilemanager/functions/dir_size_calc.dart';
 import 'package:androfilemanager/functions/open_dir.dart';
 import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/widgets/file_folder_options.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,7 @@ Widget fileFolderCard(BuildContext context,
   //     ValueNotifier(const Color.fromARGB(255, 230, 230, 230));
 
   String path = fileSystemEntity.path;
-  String folderSize = showFolderSize ? readableDirSizeCalc(path) : '';
+  // String folderSize = showFolderSize ? readableDirSizeCalc(path) : '';
   return InkWell(
       splashFactory: InkRipple.splashFactory,
       splashColor: context.read<ColorThemes>().primaryColor,
@@ -71,7 +72,11 @@ Widget fileFolderCard(BuildContext context,
           iconColor: Colors.black,
           leading: icon,
           title: Text(path.split('/').last),
-          subtitle: Text(folderSize),
+          subtitle: FutureBuilder(
+              future: compute(readableDirSizeCalc, path),
+              builder: (context, folderSize) {
+                return Text(folderSize.hasData ? folderSize.data ?? '' : '');
+              }),
           trailing: Visibility(
             visible: context.read<SelectedItems>().items.isEmpty,
             child: IconButton(

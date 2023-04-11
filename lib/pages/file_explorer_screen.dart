@@ -9,6 +9,7 @@ import 'package:androfilemanager/widgets/file_type_icon.dart';
 import 'package:androfilemanager/widgets/options/copy_button.dart';
 import 'package:androfilemanager/widgets/options/move_button.dart';
 import 'package:androfilemanager/widgets/selected_options/selected_items_options.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ class FileExplorerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<FileSystemEntity> dirItemsList = dirListItems(location: location);
+    // List<FileSystemEntity> dirItemsList = dirListItems(location);
     final String directoryTitle;
 
     // isSelectionModeActive.value =
@@ -58,15 +59,29 @@ class FileExplorerScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           _AppBarBottomSection(hideLocation: hideLocation, location: location),
-          Consumer<SelectedItems>(builder: (context, selectedItems, child) {
-            return Expanded(
-              child: dirItemsList.isEmpty
-                  ? const _EmptyFolderSection()
-                  : _ListFileFoldersSection(
-                      dirItemsList: dirItemsList,
-                      selectedItems: selectedItems.items),
-            );
-          }),
+          FutureBuilder(
+              future: compute(dirListItems, location),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text(snapshot.error.toString() +
+                      snapshot.connectionState.toString());
+                }
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                List<FileSystemEntity> dirItemsList =
+                    snapshot.data as List<FileSystemEntity>;
+                return Consumer<SelectedItems>(
+                    builder: (context, selectedItems, child) {
+                  return Expanded(
+                    child: dirItemsList.isEmpty
+                        ? const _EmptyFolderSection()
+                        : _ListFileFoldersSection(
+                            dirItemsList: dirItemsList,
+                            selectedItems: selectedItems.items),
+                  );
+                });
+              }),
         ],
       ),
     ));
@@ -158,7 +173,7 @@ class _ListFileFoldersSection extends StatelessWidget {
           }
 
           return FutureBuilder(
-              future: fileTypeThumbnail(location: dirItemsList[index].path),
+              future: fileTypeThumbnail(dirItemsList[index].path),
               builder: (context, iconSnapshot) {
                 Widget icon;
                 if (iconSnapshot.connectionState != ConnectionState.done) {

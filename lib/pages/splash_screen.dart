@@ -9,6 +9,7 @@ import 'package:androfilemanager/pages/home_screen.dart';
 import 'package:androfilemanager/pages/terms_and_conditions_screen.dart';
 import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/themes/colors.dart';
+import 'package:androfilemanager/thumbnail_database/thumbnail_database.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ms_material_color/ms_material_color.dart';
@@ -51,6 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
       checkPermissions();
       internalRootDir = '${await storage.getInternalPath()}/';
       //::::::Hive Database App config::::::::::
+
       await Hive.initFlutter();
       await Hive.openBox('appConfig');
       appConfigBox = Hive.box('appConfig');
@@ -83,6 +85,17 @@ class _SplashScreenState extends State<SplashScreen> {
           log("::::EXT PATH::::: $externalRootDir:::");
         }
       }
+
+      await ThumbnailDatabase.init();
+      //---------FileTypeScanning Starts here---------
+      // FileTypeDatabase.init();
+      // compute(scanFileType, internalRootDir);
+
+      // if (externalRootDir != null) {
+      //   compute(scanFileType, externalRootDir!);
+      // }
+
+      //----------------------------------------------
 
       log(':::::${await storage.totalInternalBytes()}::::');
       log(':::::${await storage.freeInternalBytes()}::::');

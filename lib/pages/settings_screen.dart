@@ -54,7 +54,7 @@ class _SettingScreenState extends State<SettingScreen> {
             //:::::::::Settings Items::::::::
 
             SwitchListTile(
-              title: const Text('Show folder size with folder (Beta)'),
+              title: const Text('Show folder size with folder'),
               value: showFolderSize,
               onChanged: (value) {
                 setState(() {

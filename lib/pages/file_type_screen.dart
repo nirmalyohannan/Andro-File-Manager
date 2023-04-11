@@ -1,29 +1,27 @@
 import 'dart:developer';
+
 import 'dart:io';
 import 'package:androfilemanager/consts.dart';
-import 'package:androfilemanager/functions/scan_file_type.dart';
+import 'package:androfilemanager/functions/native_call_media.dart';
 import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/widgets/file_folder.dart';
 import 'package:androfilemanager/widgets/file_type_icon.dart';
 import 'package:androfilemanager/widgets/selected_options/selected_items_options.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-class FileTypeScreen extends StatefulWidget {
+class FileTypeScreen extends StatelessWidget {
   final String directoryTitle;
-  final List<String> typesList;
+  final MediaType mediaType;
   const FileTypeScreen(
-      {super.key, required this.directoryTitle, required this.typesList});
+      {super.key, required this.directoryTitle, required this.mediaType});
 
-  @override
-  State<FileTypeScreen> createState() => _FileTypeScreenState();
-}
-
-class _FileTypeScreenState extends State<FileTypeScreen> {
   @override
   Widget build(BuildContext context) {
-    List<FileSystemEntity> dirItemsList =
-        scanFileType(typesList: widget.typesList, location: internalRootDir);
+    // List<FileSystemEntity> dirItemsList =
+    //     scanFileType(widget.typesList, internalRootDir);
 
     context.read<SelectedItems>().items.clear();
     //selected items Will be cleared when a new page builds.
@@ -31,7 +29,7 @@ class _FileTypeScreenState extends State<FileTypeScreen> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text(widget.directoryTitle),
+        title: Text(directoryTitle),
         elevation: 0,
         actions: [
           selectedItemsOptions(),
@@ -52,46 +50,59 @@ class _FileTypeScreenState extends State<FileTypeScreen> {
               ),
             ),
           ),
-          Consumer<SelectedItems>(builder: (context, selectedItems, child) {
-            return Expanded(
-              child: dirItemsList.isEmpty
-                  ? const Center(
-                      child: Text(
-                        "Folder is Empty",
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: dirItemsList.length,
-                      itemBuilder: ((context, index) {
-                        Color folderColor =
-                            const Color.fromARGB(255, 230, 230, 230);
-                        if (selectedItems.items.contains(dirItemsList[index])) {
-                          log('::::::selected items contains true:::::::');
-                          folderColor =
-                              context.watch<ColorThemes>().primaryColor;
-                        }
+          FutureBuilder(
+              // future: compute(getGalleryImages, ''),
+              future: getMedias(mediaType),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                }
+                if (!snapshot.hasData) {
+                  return const CircularProgressIndicator();
+                }
+                List<String> pathList = snapshot.data!;
 
-                        return FutureBuilder(
-                            future: fileTypeThumbnail(
-                                location: dirItemsList[index].path),
-                            builder: (context, iconSnapshot) {
-                              Widget icon;
-                              if (iconSnapshot.connectionState !=
-                                  ConnectionState.done) {
-                                icon = fileTypeIcon(
-                                    location: dirItemsList[index].path);
-                              } else {
-                                icon = iconSnapshot.data!;
+                return Consumer<SelectedItems>(
+                    builder: (context, selectedItems, child) {
+                  return Expanded(
+                    child: pathList.isEmpty
+                        ? const Center(
+                            child: Text(
+                              "Folder is Empty",
+                              style: TextStyle(fontSize: 24),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: pathList.length,
+                            itemBuilder: ((context, index) {
+                              Color folderColor =
+                                  const Color.fromARGB(255, 230, 230, 230);
+                              if (selectedItems.items
+                                  .contains(File(pathList[index]))) {
+                                log('::::::selected items contains true:::::::');
+                                folderColor =
+                                    context.watch<ColorThemes>().primaryColor;
                               }
-                              return fileFolderCard(context,
-                                  fileSystemEntity: dirItemsList[index],
-                                  icon: icon,
-                                  folderColor: folderColor);
-                            });
-                      })),
-            );
-          }),
+
+                              return FutureBuilder(
+                                  future: fileTypeThumbnail(pathList[index]),
+                                  builder: (context, iconSnapshot) {
+                                    Widget icon;
+                                    if (!iconSnapshot.hasData) {
+                                      icon = fileTypeIcon(
+                                          location: pathList[index]);
+                                    } else {
+                                      icon = iconSnapshot.data!;
+                                    }
+                                    return fileFolderCard(context,
+                                        fileSystemEntity: File(pathList[index]),
+                                        icon: icon,
+                                        folderColor: folderColor);
+                                  });
+                            })),
+                  );
+                });
+              }),
         ],
       ),
     ));

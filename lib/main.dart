@@ -23,6 +23,7 @@ class AndroFileManager extends StatelessWidget {
         builder: (context, colorThemes, child) => MaterialApp(
           theme: ThemeData(primarySwatch: colorThemes.primaryColor),
           debugShowCheckedModeBanner: false,
+          showPerformanceOverlay: true,
           title: 'Andro File Manager',
           home: const SplashScreen(),
         ),

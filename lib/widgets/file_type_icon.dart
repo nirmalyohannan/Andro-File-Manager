@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:androfilemanager/functions/compress_and_cache_thumbnail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
@@ -34,8 +35,8 @@ Widget fileTypeIcon({required String location, double iconSize = 40}) {
   }
 }
 
-Future<Widget> fileTypeThumbnail(
-    {required String location, double iconSize = 40}) async {
+Future<Widget> fileTypeThumbnail(String location,
+    [double iconSize = 40]) async {
   if (FileSystemEntity.isDirectorySync(location)) {
     return Icon(Icons.folder_open_outlined, size: iconSize);
   } else {
@@ -85,10 +86,19 @@ Future<Widget> fileTypeThumbnail(
     } else if (documentTypes.contains(extension)) {
       return Icon(Icons.file_copy_outlined, size: iconSize);
     } else if (imageTypes.contains(extension)) {
-      File file;
+      // File file;
+      Uint8List imageData;
       try {
-        file = File(location);
-        if (file.lengthSync() == 0) {
+        // file = File(location);
+        imageData = await compressAndCacheThumbnail(location) ??
+            File(location).readAsBytesSync();
+
+        // file = await FlutterNativeImage.compressImage(location, quality: 5);
+        // log(file.lengthSync().toString());
+        // if (file.lengthSync() == 0) {
+        //   throw StateError("The file is empty as an image");
+        // }
+        if (imageData.isEmpty) {
           throw StateError("The file is empty as an image");
         }
       } on StateError {
@@ -96,12 +106,13 @@ Future<Widget> fileTypeThumbnail(
       } catch (e) {
         log("Thumbnail not loaded");
         log(e.toString());
-        file = File(iconPathImage);
+        // file = File(iconPathImage);
+        imageData = File(iconPathImage).readAsBytesSync();
       }
       return SizedBox(
         height: 50,
         width: 50,
-        child: Image.file(file,
+        child: Image.memory(imageData,
             filterQuality: FilterQuality.none,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) =>

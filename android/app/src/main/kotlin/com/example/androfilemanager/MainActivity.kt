@@ -2,9 +2,12 @@ package com.example.androfilemanager
 
 import android.app.usage.StorageStatsManager
 import android.content.Context
+import android.database.Cursor
+import android.net.Uri
 import android.os.Environment
 import android.os.StatFs
 import android.os.storage.StorageManager
+import android.provider.MediaStore
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -15,6 +18,7 @@ class MainActivity : FlutterFragmentActivity() {
 
     private val channel_1 = "Storage"
     private val channel_2 = "Android"
+    private val channel_3 = "Media"
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -48,6 +52,121 @@ class MainActivity : FlutterFragmentActivity() {
                 result.notImplemented()
             }
         }
+        // -------------
+        MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), channel_3)
+                .setMethodCallHandler { call, result ->
+                    if (call.method.equals("getMedias")) {
+                        val medias: ArrayList<String> = ArrayList<String>()
+                        val projection: Array<String>
+                        val type: String? = call.argument("type") ?: ""
+                        if (type == "MediaType.image") {
+                            projection = arrayOf(MediaStore.Images.Media.DATA)
+                            val uri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                            val cursor: Cursor? =
+                                    getContentResolver().query(uri, projection, null, null, null)
+                            if (cursor != null) {
+                                while (cursor.moveToNext()) {
+                                    val imagePath: String =
+                                            cursor.getString(
+                                                    cursor.getColumnIndexOrThrow(
+                                                            MediaStore.Images.Media.DATA
+                                                    )
+                                            )
+                                    medias.add(imagePath)
+                                }
+                                cursor.close()
+                            }
+                        } else if (type == "MediaType.audio") {
+                            projection = arrayOf(MediaStore.Audio.Media.DATA)
+                            val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+                            val cursor: Cursor? =
+                                    getContentResolver().query(uri, projection, null, null, null)
+                            if (cursor != null) {
+                                while (cursor.moveToNext()) {
+                                    val imagePath: String =
+                                            cursor.getString(
+                                                    cursor.getColumnIndexOrThrow(
+                                                            MediaStore.Audio.Media.DATA
+                                                    )
+                                            )
+                                    medias.add(imagePath)
+                                }
+                                cursor.close()
+                            }
+                        } else if (type == "MediaType.document") {
+                            projection = arrayOf(MediaStore.Files.FileColumns.DATA)
+                            val uri: Uri = MediaStore.Files.getContentUri("external")
+                            val selection: String = MediaStore.Files.FileColumns.MIME_TYPE + "=?"
+                            val selectionArgs: Array<String> =
+                                    arrayOf(
+                                            "application/pdf",
+                                            // "application/epub+zip",
+                                            // "application/msword",
+                                            // "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                                            // "text/plain"
+                                            )
+                            val cursor: Cursor? =
+                                    getContentResolver()
+                                            .query(uri, projection, selection, selectionArgs, null)
+                            if (cursor != null) {
+                                while (cursor.moveToNext()) {
+                                    val imagePath: String =
+                                            cursor.getString(
+                                                    cursor.getColumnIndexOrThrow(
+                                                            MediaStore.Audio.Media.DATA
+                                                    )
+                                            )
+                                    medias.add(imagePath)
+                                }
+                                cursor.close()
+                            }
+                        } else if (type == "MediaType.app") {
+                            projection = arrayOf(MediaStore.Files.FileColumns.DATA)
+                            val uri: Uri = MediaStore.Files.getContentUri("external")
+                            val selection: String = MediaStore.Files.FileColumns.MIME_TYPE + "=?"
+                            val selectionArgs: Array<String> =
+                                    arrayOf(
+                                            "application/vnd.android.package-archive",
+                                    )
+                            val cursor: Cursor? =
+                                    getContentResolver()
+                                            .query(uri, projection, selection, selectionArgs, null)
+                            if (cursor != null) {
+                                while (cursor.moveToNext()) {
+                                    val imagePath: String =
+                                            cursor.getString(
+                                                    cursor.getColumnIndexOrThrow(
+                                                            MediaStore.Audio.Media.DATA
+                                                    )
+                                            )
+                                    medias.add(imagePath)
+                                }
+                                cursor.close()
+                            }
+                        } else {
+                            projection = arrayOf(MediaStore.Video.Media.DATA)
+                            val uri: Uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                            val cursor: Cursor? =
+                                    getContentResolver().query(uri, projection, null, null, null)
+                            if (cursor != null) {
+                                while (cursor.moveToNext()) {
+                                    val imagePath: String =
+                                            cursor.getString(
+                                                    cursor.getColumnIndexOrThrow(
+                                                            MediaStore.Video.Media.DATA
+                                                    )
+                                            )
+                                    medias.add(imagePath)
+                                }
+                                cursor.close()
+                            }
+                        }
+
+                        result.success(medias)
+                    } else {
+                        result.notImplemented()
+                    }
+                }
     }
 
     private fun getInternalTotalSpace(): Long {

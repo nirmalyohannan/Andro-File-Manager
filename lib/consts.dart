@@ -33,7 +33,7 @@ String?
 
 //::::::::::::App Config::::::::::::::::
 late Box appConfigBox;
-bool showFolderSize = false;
+bool showFolderSize = true;
 //:::::::::::::::::::::::::::::::::::::
 
 //:::::::::App Recent Files:::::::::::;

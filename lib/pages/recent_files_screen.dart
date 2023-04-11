@@ -98,8 +98,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                         }
 
                         return FutureBuilder(
-                            future: fileTypeThumbnail(
-                                location: dirItemsList[index].path),
+                            future: fileTypeThumbnail(dirItemsList[index].path),
                             builder: (context, iconSnapshot) {
                               Widget icon;
                               if (iconSnapshot.connectionState !=

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/authentication.dart';
+import 'package:androfilemanager/functions/native_call_media.dart';
 import 'package:androfilemanager/functions/open_dir.dart';
 import 'package:androfilemanager/pages/file_explorer_screen.dart';
 import 'package:androfilemanager/pages/recent_files_screen.dart';
@@ -9,6 +10,7 @@ import 'package:androfilemanager/pages/settings_screen.dart';
 import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/widgets/diskspace_tile.dart';
 import 'package:androfilemanager/widgets/tile_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -111,9 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onPressed: () {
                                   Navigator.push(context, MaterialPageRoute(
                                     builder: (context) {
-                                      return FileTypeScreen(
+                                      return const FileTypeScreen(
                                         directoryTitle: "Videos",
-                                        typesList: videoTypes,
+                                        mediaType: MediaType.video,
                                       );
                                     },
                                   ));
@@ -126,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   builder: (context) {
                                     return FileTypeScreen(
                                       directoryTitle: "Images",
-                                      typesList: imageTypes,
+                                      mediaType: MediaType.image,
                                     );
                                   },
                                 ));
@@ -140,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     builder: (context) {
                                       return FileTypeScreen(
                                         directoryTitle: "Music",
-                                        typesList: audioTypes,
+                                        mediaType: MediaType.audio,
                                       );
                                     },
                                   ));
@@ -162,9 +164,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   title: 'Documents', onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) {
-                                    return FileTypeScreen(
+                                    return const FileTypeScreen(
                                       directoryTitle: "Documents",
-                                      typesList: documentTypes,
+                                      mediaType: MediaType.document,
                                     );
                                   },
                                 ));
@@ -176,9 +178,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onPressed: () {
                                   Navigator.push(context, MaterialPageRoute(
                                     builder: (context) {
-                                      return FileTypeScreen(
+                                      return const FileTypeScreen(
                                         directoryTitle: "App apks",
-                                        typesList: appTypes,
+                                        mediaType: MediaType.app,
                                       );
                                     },
                                   ));
