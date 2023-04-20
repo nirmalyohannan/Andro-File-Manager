@@ -90,7 +90,8 @@ Future<Widget> fileTypeThumbnail(String location,
       Uint8List imageData;
       try {
         // file = File(location);
-        imageData = await compressAndCacheThumbnail(location) ??
+        imageData = await ThumbnailService.instance
+                .compressAndCacheThumbnail(location) ??
             File(location).readAsBytesSync();
 
         // file = await FlutterNativeImage.compressImage(location, quality: 5);
@@ -107,7 +108,8 @@ Future<Widget> fileTypeThumbnail(String location,
         log("Thumbnail not loaded");
         log(e.toString());
         // file = File(iconPathImage);
-        imageData = File(iconPathImage).readAsBytesSync();
+        ByteData bytes = await rootBundle.load(iconPathImage);
+        imageData = bytes.buffer.asUint8List();
       }
       return SizedBox(
         height: 50,

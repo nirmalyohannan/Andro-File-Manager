@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 
-const platform = MethodChannel('Media');
-
 enum MediaType { image, video, audio, document, app }
 
 Future<List<String>> getMedias(MediaType type) async {
   try {
+    const platform = MethodChannel('Media');
+
     log(type.toString());
     final List<dynamic> result =
         await platform.invokeMethod('getMedias', {'type': type.toString()});
