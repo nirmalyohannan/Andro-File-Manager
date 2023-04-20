@@ -46,13 +46,13 @@ dependencies:
   ms_material_color: ^1.0.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  local_auth: ^2.1.2
+  local_auth: ^2.1.6
   video_thumbnail: ^0.5.3
   shared_preferences: ^2.0.15
   lottie: ^2.1.0
   provider: ^6.0.5
-  photo_manager: ^2.6.0
-  flutter_native_image: ^0.0.6+1
+  # photo_manager: ^2.6.0
+  # flutter_native_image: ^0.0.6+1
   # flutter_image_compress: ^1.1.3
   image: ^4.0.15
   workmanager: ^0.5.1
