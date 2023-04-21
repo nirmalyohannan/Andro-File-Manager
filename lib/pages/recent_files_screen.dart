@@ -39,46 +39,57 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
     context.read<SelectedItems>().items.clear();
 //selected items Will be cleared when a new page builds.
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Recent Files"),
-        elevation: 0,
-        actions: [
-          selectedItemsOptions(),
-          InkWell(
-            onTap: () async {
-              await appRecentFiles.clear();
-              Navigator.pushReplacement(context, routeRecentFiles());
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: const [Icon(Icons.cancel), Text("Clear")],
+    return WillPopScope(
+      onWillPop: () async {
+        //willpopScope interrupts the back button
+        //returns true (allows go back) if files are selected;
+        //blocks go back and empties selected items if contains any
+        if (context.read<SelectedItems>().items.isEmpty) {
+          return true;
+        } else {
+          context.read<SelectedItems>().clear();
+          return false;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Recent Files"),
+          elevation: 0,
+          actions: [
+            selectedItemsOptions(),
+            InkWell(
+              onTap: () async {
+                await appRecentFiles.clear();
+                Navigator.pushReplacement(context, routeRecentFiles());
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: const [Icon(Icons.cancel), Text("Clear")],
+              ),
             ),
-          ),
-          const SizedBox(
-            width: 10,
-          )
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Consumer<ColorThemes>(
-              builder: (context, colorThemes, child) => Container(
-                padding: const EdgeInsets.only(right: 20, bottom: 10),
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                  color: colorThemes.primaryColor,
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(40),
+            const SizedBox(
+              width: 10,
+            )
+          ],
+        ),
+        body: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Consumer<ColorThemes>(
+                builder: (context, colorThemes, child) => Container(
+                  padding: const EdgeInsets.only(right: 20, bottom: 10),
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: colorThemes.primaryColor,
+                    borderRadius: const BorderRadius.vertical(
+                      bottom: Radius.circular(40),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Consumer<SelectedItems>(builder: (context, selectedItems, child) {
-              return Expanded(
+              Expanded(
                 child: dirItemsList.isEmpty
                     ? const Center(
                         child: Text(
@@ -89,15 +100,6 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                     : ListView.builder(
                         itemCount: dirItemsList.length,
                         itemBuilder: ((context, index) {
-                          Color folderColor =
-                              const Color.fromARGB(255, 230, 230, 230);
-                          if (selectedItems.items
-                              .contains(dirItemsList[index])) {
-                            log('::::::selected items contains true:::::::');
-                            folderColor =
-                                context.watch<ColorThemes>().primaryColor;
-                          }
-
                           return FutureBuilder(
                               future:
                                   fileTypeThumbnail(dirItemsList[index].path),
@@ -110,15 +112,17 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                                 } else {
                                   icon = iconSnapshot.data!;
                                 }
-                                return fileFolderCard(context,
-                                    fileSystemEntity: dirItemsList[index],
-                                    icon: icon,
-                                    folderColor: folderColor);
+                                return fileFolderCard(
+                                  context,
+                                  fileSystemEntity: dirItemsList[index],
+                                  icon: icon,
+                                  // folderColor: folderColor,
+                                );
                               });
                         })),
-              );
-            }),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

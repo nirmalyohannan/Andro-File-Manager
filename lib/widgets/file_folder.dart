@@ -13,10 +13,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-Widget fileFolderCard(BuildContext context,
-    {required FileSystemEntity fileSystemEntity,
-    required Widget icon,
-    required Color folderColor}) {
+Widget fileFolderCard(
+  BuildContext context, {
+  required FileSystemEntity fileSystemEntity,
+  required Widget icon,
+  // required Color folderColor,
+}) {
   //Color folderColor = Color.fromARGB(255, 230, 230, 230);
   // ValueNotifier<Color> folderColor =
   //     ValueNotifier(const Color.fromARGB(255, 230, 230, 230));
@@ -27,47 +29,51 @@ Widget fileFolderCard(BuildContext context,
       splashFactory: InkRipple.splashFactory,
       splashColor: context.read<ColorThemes>().primaryColor,
       onTap: () {
-        List<FileSystemEntity> selectedItems =
-            context.read<SelectedItems>().items;
+        // List<FileSystemEntity> selectedItems =
+        //     context.read<SelectedItems>().items;
 
-        if (selectedItems.isNotEmpty) {
-          if (selectedItems.contains(fileSystemEntity) == false) {
-            selectedItems.add(fileSystemEntity);
-            context.read<SelectedItems>().items = selectedItems;
-            context.read<SelectedItems>().notify();
+        if (context.read<SelectedItems>().items.isNotEmpty) {
+          // if (selectedItems.contains(fileSystemEntity) == false) {
+          //   selectedItems.add(fileSystemEntity);
+          //   context.read<SelectedItems>().items = selectedItems;
+          //   context.read<SelectedItems>().notify();
 
-            // print(selectedItems.value);
-          } else {
-            // print('unselect');
-            selectedItems.remove(fileSystemEntity);
-            context.read<SelectedItems>().items = selectedItems;
-            context.read<SelectedItems>().notify();
+          //   // print(selectedItems.value);
+          // } else {
+          //   // print('unselect');
+          //   selectedItems.remove(fileSystemEntity);
+          //   context.read<SelectedItems>().items = selectedItems;
+          //   context.read<SelectedItems>().notify();
 
-            // print(selectedItems.value);
-          }
+          //   // print(selectedItems.value);
+          // }
+          context.read<SelectedItems>().addOrRemove(fileSystemEntity);
         } else {
           openDir(context, location: path, fileSystemEntity: fileSystemEntity);
         }
       },
       onLongPress: () {
-        List<FileSystemEntity> selectedItems =
-            context.read<SelectedItems>().items;
-        if (selectedItems.contains(fileSystemEntity) == false) {
-          selectedItems.add(fileSystemEntity);
-          context.read<SelectedItems>().items = selectedItems;
-          context.read<SelectedItems>().notify();
+        // List<FileSystemEntity> selectedItems =
+        //     context.read<SelectedItems>().items;
+        // if (selectedItems.contains(fileSystemEntity) == false) {
+        //   selectedItems.add(fileSystemEntity);
+        //   context.read<SelectedItems>().items = selectedItems;
+        //   context.read<SelectedItems>().notify();
 
-          // print(selectedItems.value);
-        } else {
-          // print('::::${selectedItems.value.remove(fileSystemEntity)}');
-          context.read<SelectedItems>().items = selectedItems;
-          context.read<SelectedItems>().notify();
-        }
+        //   // print(selectedItems.value);
+        // } else {
+        //   // print('::::${selectedItems.value.remove(fileSystemEntity)}');
+        //   context.read<SelectedItems>().items = selectedItems;
+        //   context.read<SelectedItems>().notify();
+        // }
+        context.read<SelectedItems>().addOrRemove(fileSystemEntity);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         decoration: BoxDecoration(
-            color: folderColor,
+            color: context.watch<SelectedItems>().containsPath(path)
+                ? context.watch<ColorThemes>().primaryColor
+                : const Color.fromARGB(255, 230, 230, 230),
             borderRadius: const BorderRadius.all(Radius.circular(15))),
         child: ListTile(
           iconColor: Colors.black,

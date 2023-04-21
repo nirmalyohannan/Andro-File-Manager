@@ -104,7 +104,7 @@ class FileExplorerScreen extends StatelessWidget {
                             ? const _EmptyFolderSection()
                             : _ListFileFoldersSection(
                                 dirItemsList: dirItemsList,
-                                selectedItems: selectedItems.items),
+                              ),
                       );
                     });
                   }),
@@ -183,23 +183,15 @@ class _ListFileFoldersSection extends StatelessWidget {
   const _ListFileFoldersSection({
     Key? key,
     required this.dirItemsList,
-    required this.selectedItems,
   }) : super(key: key);
 
   final List<FileSystemEntity> dirItemsList;
-  final List<FileSystemEntity> selectedItems;
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
         itemCount: dirItemsList.length,
         itemBuilder: ((context, index) {
-          Color folderColor = const Color.fromARGB(255, 230, 230, 230);
-          if (selectedItems.contains(dirItemsList[index])) {
-            log('::::::selected items contains true:::::::');
-            folderColor = context.watch<ColorThemes>().primaryColor;
-          }
-
           return FutureBuilder(
               future: fileTypeThumbnail(dirItemsList[index].path),
               builder: (context, iconSnapshot) {
@@ -209,10 +201,12 @@ class _ListFileFoldersSection extends StatelessWidget {
                 } else {
                   icon = iconSnapshot.data!;
                 }
-                return fileFolderCard(context,
-                    fileSystemEntity: dirItemsList[index],
-                    icon: icon,
-                    folderColor: folderColor);
+                return fileFolderCard(
+                  context,
+                  fileSystemEntity: dirItemsList[index],
+                  icon: icon,
+                  // folderColor: folderColor,
+                );
               });
         }));
   }

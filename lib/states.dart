@@ -20,6 +20,19 @@ class SelectedItems extends ChangeNotifier {
   void notify() {
     notifyListeners();
   }
+
+  addOrRemove(FileSystemEntity fileSystemEntity) {
+    if (containsPath(fileSystemEntity.path)) {
+      items.removeWhere((element) => element.path == fileSystemEntity.path);
+    } else {
+      items.add(fileSystemEntity);
+    }
+    notifyListeners();
+  }
+
+  bool containsPath(String path) {
+    return items.map((e) => e.path == path).contains(true);
+  }
 }
 
 class ToMoveItems extends ChangeNotifier {
