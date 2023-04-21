@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:androfilemanager/functions/compress_and_cache_thumbnail.dart';
+import 'package:androfilemanager/thumbnail_database/thumbnail_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
@@ -46,43 +47,48 @@ Future<Widget> fileTypeThumbnail(String location,
       return Image.asset(iconPathAudio);
     } else if (videoTypes.contains(extension)) {
       // return Icon(Icons.video_file_outlined, size: iconSize);
-      Uint8List? videoFile;
-      try {
-        videoFile = await VideoThumbnail.thumbnailData(video: location);
-      } catch (e) {
-        ByteData bytes = await rootBundle.load(iconPathVideo);
-        videoFile = bytes.buffer.asUint8List();
-      }
 
-      if (videoFile == null) {
-        return Icon(Icons.video_file_outlined, size: iconSize);
+      Uint8List? videoFile;
+      if (ThumbnailDatabase.isExists(location)) {
+        videoFile = ThumbnailDatabase.get(location);
       } else {
-        return SizedBox(
-          height: 50,
-          width: 50,
-          child: Stack(
-            fit: StackFit.passthrough,
-            children: [
-              Image.memory(
-                videoFile,
-                filterQuality: FilterQuality.none,
-                fit: BoxFit.cover,
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: SizedBox(
-                  width: iconSize / 1.5,
-                  child: Image.asset(
-                    iconPathVideo,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              )
-            ],
-          ),
-        );
+        try {
+          videoFile = await VideoThumbnail.thumbnailData(video: location);
+        } catch (e) {
+          ByteData bytes = await rootBundle.load(iconPathVideo);
+          videoFile = bytes.buffer.asUint8List();
+        }
+
+        if (videoFile == null) {
+          return Icon(Icons.video_file_outlined, size: iconSize);
+        }
       }
+      ThumbnailDatabase.add(location, videoFile);
+      return SizedBox(
+        height: 50,
+        width: 50,
+        child: Stack(
+          fit: StackFit.passthrough,
+          children: [
+            Image.memory(
+              videoFile,
+              filterQuality: FilterQuality.none,
+              fit: BoxFit.cover,
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: SizedBox(
+                width: iconSize / 1.5,
+                child: Image.asset(
+                  iconPathVideo,
+                  fit: BoxFit.contain,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
     } else if (documentTypes.contains(extension)) {
       return Icon(Icons.file_copy_outlined, size: iconSize);
     } else if (imageTypes.contains(extension)) {
