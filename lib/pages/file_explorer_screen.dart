@@ -57,46 +57,59 @@ class FileExplorerScreen extends StatelessWidget {
     } else {
       directoryTitle = location.split('/').last;
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(directoryTitle),
-        elevation: 0,
-        actions: [
-          copyButton(path: location),
-          moveButton(path: location),
-          selectedItemsOptions(),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            _AppBarBottomSection(
-                hideLocation: hideLocation, location: location),
-            FutureBuilder(
-                future: compute(dirListItems, location),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text(snapshot.error.toString() +
-                        snapshot.connectionState.toString());
-                  }
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  List<FileSystemEntity> dirItemsList =
-                      snapshot.data as List<FileSystemEntity>;
-                  return Consumer<SelectedItems>(
-                      builder: (context, selectedItems, child) {
-                    return Expanded(
-                      child: dirItemsList.isEmpty
-                          ? const _EmptyFolderSection()
-                          : _ListFileFoldersSection(
-                              dirItemsList: dirItemsList,
-                              selectedItems: selectedItems.items),
-                    );
-                  });
-                }),
+    return WillPopScope(
+      onWillPop: () async {
+        //willpopScope interrupts the back button
+        //returns true (allows go back) if files are selected;
+        //blocks go back and empties selected items if contains any
+        if (context.read<SelectedItems>().items.isEmpty) {
+          return true;
+        } else {
+          context.read<SelectedItems>().clear();
+          return false;
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(directoryTitle),
+          elevation: 0,
+          actions: [
+            copyButton(path: location),
+            moveButton(path: location),
+            selectedItemsOptions(),
           ],
+        ),
+        body: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              _AppBarBottomSection(
+                  hideLocation: hideLocation, location: location),
+              FutureBuilder(
+                  future: compute(dirListItems, location),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text(snapshot.error.toString() +
+                          snapshot.connectionState.toString());
+                    }
+                    if (!snapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    List<FileSystemEntity> dirItemsList =
+                        snapshot.data as List<FileSystemEntity>;
+                    return Consumer<SelectedItems>(
+                        builder: (context, selectedItems, child) {
+                      return Expanded(
+                        child: dirItemsList.isEmpty
+                            ? const _EmptyFolderSection()
+                            : _ListFileFoldersSection(
+                                dirItemsList: dirItemsList,
+                                selectedItems: selectedItems.items),
+                      );
+                    });
+                  }),
+            ],
+          ),
         ),
       ),
     );

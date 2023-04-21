@@ -12,6 +12,11 @@ import 'package:flutter/material.dart';
 class SelectedItems extends ChangeNotifier {
   List<FileSystemEntity> items = [];
 
+  clear() {
+    items.clear();
+    notifyListeners();
+  }
+
   void notify() {
     notifyListeners();
   }
