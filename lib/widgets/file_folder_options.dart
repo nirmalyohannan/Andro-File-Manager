@@ -8,6 +8,7 @@ import 'package:androfilemanager/widgets/options/properties_options.dart';
 import 'package:androfilemanager/widgets/options/rename_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 void fileFolderOptions(BuildContext context,
     {required FileSystemEntity fileSystemEntity}) {
@@ -62,6 +63,14 @@ void fileFolderOptions(BuildContext context,
         }),
       );
     }),
+    //--------------only if is File----------------
+    if (FileSystemEntity.isFileSync(fileSystemEntity.path))
+      option(context, 'Share', onPressed: () {
+        Share.shareXFiles(
+          [XFile(fileSystemEntity.path)],
+        );
+      }),
+    //-----------------------------
     option(context, 'Properties', onPressed: () {
       propertiesOptions(context, path: fileSystemEntity.path);
     }),
@@ -112,6 +121,14 @@ void fileFolderOptions(BuildContext context,
         },
       ));
     }),
+    //--------------only if is File----------------
+    if (FileSystemEntity.isFileSync(fileSystemEntity.path))
+      option(context, 'Share', onPressed: () {
+        Share.shareXFiles(
+          [XFile(fileSystemEntity.path)],
+        );
+      }),
+    //-----------------------------
     option(context, 'Properties', onPressed: () {
       propertiesOptions(context, path: fileSystemEntity.path);
     }),

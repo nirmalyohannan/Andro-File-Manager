@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:androfilemanager/functions/file_operations.dart';
 import 'package:androfilemanager/pages/file_explorer_screen.dart';
 import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/widgets/selected_options/selected_properties_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 Widget selectedItemsOptions() {
   return Consumer<SelectedItems>(builder: (context, selectedItems, child) {
@@ -50,31 +53,47 @@ Widget selectedItemsOptions() {
               selectedPropertiesOptions(context,
                   selectedItems: selectedItems.items);
               break;
+            case 5:
+              Share.shareXFiles(
+                  selectedItems.items.map((e) => XFile(e.path)).toList());
+              break;
             default:
           }
         },
         itemBuilder: (context) {
-          return const [
-            PopupMenuItem<int>(
+          bool containsFolder = false;
+          for (var item in selectedItems.items) {
+            if (FileSystemEntity.isDirectorySync(item.path)) {
+              containsFolder = true;
+              break;
+            }
+          }
+          return [
+            const PopupMenuItem<int>(
               value: 0,
               child: Text("Copy"),
             ),
-            PopupMenuItem<int>(
+            const PopupMenuItem<int>(
               value: 1,
               child: Text("Move"),
             ),
-            PopupMenuItem<int>(
+            const PopupMenuItem<int>(
               value: 2,
               child: Text("Delete"),
             ),
-            PopupMenuItem<int>(
+            const PopupMenuItem<int>(
               value: 3,
               child: Text("Hide Selected Files"),
             ),
-            PopupMenuItem<int>(
+            const PopupMenuItem<int>(
               value: 4,
               child: Text("Properties"),
             ),
+            if (!containsFolder)
+              const PopupMenuItem<int>(
+                value: 5,
+                child: Text("Share"),
+              ),
           ];
         },
       ),
