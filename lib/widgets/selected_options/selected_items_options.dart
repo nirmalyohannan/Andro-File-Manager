@@ -21,6 +21,7 @@ Widget selectedItemsOptions() {
               context.read<ToCopyItems>().clear();
               // toCopyItems.value.clear();
               context.read<ToCopyItems>().addAll(selectedItems.items);
+              selectedItems.clear();
               // toCopyItems.value.addAll(selectedItems.items);
               // toCopyItems.notifyListeners();
               // toMoveItems.notifyListeners();
@@ -32,6 +33,7 @@ Widget selectedItemsOptions() {
 
               // toMoveItems.value.clear();
               context.read<ToMoveItems>().addAll(selectedItems.items);
+              selectedItems.clear();
 
               // toMoveItems.value.addAll(selectedItems.items);
               // toMoveItems.notifyListeners();
@@ -40,8 +42,7 @@ Widget selectedItemsOptions() {
             case 2:
               String parentPath = selectedItems.items[0].parent.path;
               await deleteOperation(context, deleteItems: selectedItems.items);
-              selectedItems.items.clear();
-              selectedItems.notify();
+              selectedItems.clear();
               // ignore: use_build_context_synchronously
               Navigator.pushReplacement(context, MaterialPageRoute(
                 builder: (context) {
