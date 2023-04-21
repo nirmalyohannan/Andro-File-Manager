@@ -27,16 +27,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: GestureDetector(
-          onVerticalDragUpdate: (details) {
-            //Drag Down to open Recent Files
-            log(details.delta.dy.toString());
-            if (details.delta.dy > 5) {
-              Navigator.push(context, routeRecentFiles());
-            }
-          },
+    return Scaffold(
+      body: GestureDetector(
+        onVerticalDragUpdate: (details) {
+          //Drag Down to open Recent Files
+          log(details.delta.dy.toString());
+          if (details.delta.dy > 5) {
+            Navigator.push(context, routeRecentFiles());
+          }
+        },
+        child: SafeArea(
           child: Column(
             children: [
               Expanded(

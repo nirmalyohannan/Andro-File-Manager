@@ -39,8 +39,7 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
     context.read<SelectedItems>().items.clear();
 //selected items Will be cleared when a new page builds.
 
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text("Recent Files"),
         elevation: 0,
@@ -62,62 +61,66 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
           )
         ],
       ),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Consumer<ColorThemes>(
-            builder: (context, colorThemes, child) => Container(
-              padding: const EdgeInsets.only(right: 20, bottom: 10),
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                color: colorThemes.primaryColor,
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(40),
+      body: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Consumer<ColorThemes>(
+              builder: (context, colorThemes, child) => Container(
+                padding: const EdgeInsets.only(right: 20, bottom: 10),
+                width: double.maxFinite,
+                decoration: BoxDecoration(
+                  color: colorThemes.primaryColor,
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(40),
+                  ),
                 ),
               ),
             ),
-          ),
-          Consumer<SelectedItems>(builder: (context, selectedItems, child) {
-            return Expanded(
-              child: dirItemsList.isEmpty
-                  ? const Center(
-                      child: Text(
-                        "No Recent Files",
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: dirItemsList.length,
-                      itemBuilder: ((context, index) {
-                        Color folderColor =
-                            const Color.fromARGB(255, 230, 230, 230);
-                        if (selectedItems.items.contains(dirItemsList[index])) {
-                          log('::::::selected items contains true:::::::');
-                          folderColor =
-                              context.watch<ColorThemes>().primaryColor;
-                        }
+            Consumer<SelectedItems>(builder: (context, selectedItems, child) {
+              return Expanded(
+                child: dirItemsList.isEmpty
+                    ? const Center(
+                        child: Text(
+                          "No Recent Files",
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: dirItemsList.length,
+                        itemBuilder: ((context, index) {
+                          Color folderColor =
+                              const Color.fromARGB(255, 230, 230, 230);
+                          if (selectedItems.items
+                              .contains(dirItemsList[index])) {
+                            log('::::::selected items contains true:::::::');
+                            folderColor =
+                                context.watch<ColorThemes>().primaryColor;
+                          }
 
-                        return FutureBuilder(
-                            future: fileTypeThumbnail(dirItemsList[index].path),
-                            builder: (context, iconSnapshot) {
-                              Widget icon;
-                              if (iconSnapshot.connectionState !=
-                                  ConnectionState.done) {
-                                icon = fileTypeIcon(
-                                    location: dirItemsList[index].path);
-                              } else {
-                                icon = iconSnapshot.data!;
-                              }
-                              return fileFolderCard(context,
-                                  fileSystemEntity: dirItemsList[index],
-                                  icon: icon,
-                                  folderColor: folderColor);
-                            });
-                      })),
-            );
-          }),
-        ],
+                          return FutureBuilder(
+                              future:
+                                  fileTypeThumbnail(dirItemsList[index].path),
+                              builder: (context, iconSnapshot) {
+                                Widget icon;
+                                if (iconSnapshot.connectionState !=
+                                    ConnectionState.done) {
+                                  icon = fileTypeIcon(
+                                      location: dirItemsList[index].path);
+                                } else {
+                                  icon = iconSnapshot.data!;
+                                }
+                                return fileFolderCard(context,
+                                    fileSystemEntity: dirItemsList[index],
+                                    icon: icon,
+                                    folderColor: folderColor);
+                              });
+                        })),
+              );
+            }),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

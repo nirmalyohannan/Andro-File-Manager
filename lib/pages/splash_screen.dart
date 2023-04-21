@@ -123,14 +123,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      body: Center(
-        child: Image.asset(
-          'assets/logo/AndroLogo.png',
-          width: 250,
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Image.asset(
+            'assets/logo/AndroLogo.png',
+            width: 250,
+          ),
         ),
       ),
-    ));
+    );
   }
 }
