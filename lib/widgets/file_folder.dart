@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/dir_size_calc.dart';
 import 'package:androfilemanager/functions/open_dir.dart';
+import 'package:androfilemanager/pages/file_explorer_screen.dart';
 import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/widgets/file_folder_options.dart';
 import 'package:flutter/foundation.dart';
@@ -72,11 +73,18 @@ Widget fileFolderCard(BuildContext context,
           iconColor: Colors.black,
           leading: icon,
           title: Text(path.split('/').last),
-          subtitle: FutureBuilder(
-              future: compute(readableDirSizeCalc, path),
-              builder: (context, folderSize) {
-                return Text(folderSize.hasData ? folderSize.data ?? '' : '');
-              }),
+          subtitle: FileExplorerScreen.fileFolderSizeMemory[path] != null
+              ? Text(FileExplorerScreen.fileFolderSizeMemory[path]!)
+              : FutureBuilder(
+                  future: compute(readableDirSizeCalc, path),
+                  builder: (context, folderSize) {
+                    if (folderSize.hasData) {
+                      FileExplorerScreen.fileFolderSizeMemory[path] =
+                          folderSize.data ?? '';
+                      return Text(folderSize.data ?? '');
+                    }
+                    return const Text('');
+                  }),
           trailing: Visibility(
             visible: context.read<SelectedItems>().items.isEmpty,
             child: IconButton(

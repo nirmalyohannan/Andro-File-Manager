@@ -18,11 +18,24 @@ import 'package:provider/provider.dart';
 class FileExplorerScreen extends StatelessWidget {
   final String location;
   bool hideLocation;
+
+//-----------
+  static Map<String, String> fileFolderSizeMemory = {};
+  /*This fileFolderSizeMemory Keeps Calculated size of each folder in Memory
+    Therefore whenever list View Builder tries to rebuild the fileFolderCard each time,
+    the file folder is not calculated again, this reduces the cpu consumpition,
+    This Map(fileFolderSizeMemory) is cleared whenever directory is changed 
+    i.e new List View Builder is started building.
+  */
+//-----------------
   FileExplorerScreen(
       {super.key, required this.location, this.hideLocation = false});
 
   @override
   Widget build(BuildContext context) {
+    fileFolderSizeMemory
+        .clear(); //clearing the map when a new directory is opened
+
     // List<FileSystemEntity> dirItemsList = dirListItems(location);
     final String directoryTitle;
 
