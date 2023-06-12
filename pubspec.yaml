@@ -47,7 +47,7 @@ dependencies:
   ms_material_color: ^1.0.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  local_auth: ^2.1.6
+  local_auth:
   video_thumbnail: ^0.5.3
   shared_preferences: ^2.0.15
   lottie: ^2.1.0
