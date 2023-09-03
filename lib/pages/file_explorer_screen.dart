@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/dir_list_items.dart';
@@ -151,9 +150,9 @@ class _AppBarBottomSection extends StatelessWidget {
                   },
                 ));
               },
-              child: Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [Icon(Icons.add), Text("New Folder")],
+                children: [Icon(Icons.add), Text("New Folder")],
               ),
             )
           ],

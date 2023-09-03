@@ -10,7 +10,6 @@ import 'package:androfilemanager/pages/settings_screen.dart';
 import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/widgets/diskspace_tile.dart';
 import 'package:androfilemanager/widgets/tile_button.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -126,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   title: 'Pictures', onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(
                                   builder: (context) {
-                                    return FileTypeScreen(
+                                    return const FileTypeScreen(
                                       directoryTitle: "Images",
                                       mediaType: MediaType.image,
                                     );
@@ -140,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onPressed: () {
                                   Navigator.push(context, MaterialPageRoute(
                                     builder: (context) {
-                                      return FileTypeScreen(
+                                      return const FileTypeScreen(
                                         directoryTitle: "Music",
                                         mediaType: MediaType.audio,
                                       );

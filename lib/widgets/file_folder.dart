@@ -3,7 +3,6 @@
 
 import 'dart:io';
 
-import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/dir_size_calc.dart';
 import 'package:androfilemanager/functions/open_dir.dart';
 import 'package:androfilemanager/pages/file_explorer_screen.dart';

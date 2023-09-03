@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/pages/home_screen.dart';
@@ -62,10 +61,10 @@ class _RecentFilesScreenState extends State<RecentFilesScreen> {
                 await appRecentFiles.clear();
                 Navigator.pushReplacement(context, routeRecentFiles());
               },
-              child: Row(
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
-                children: const [Icon(Icons.cancel), Text("Clear")],
+                children: [Icon(Icons.cancel), Text("Clear")],
               ),
             ),
             const SizedBox(

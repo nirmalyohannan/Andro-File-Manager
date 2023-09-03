@@ -1,15 +1,11 @@
-import 'dart:developer';
 
 import 'dart:io';
-import 'package:androfilemanager/consts.dart';
 import 'package:androfilemanager/functions/native_call_media.dart';
 import 'package:androfilemanager/states.dart';
 import 'package:androfilemanager/widgets/file_folder.dart';
 import 'package:androfilemanager/widgets/file_type_icon.dart';
 import 'package:androfilemanager/widgets/selected_options/selected_items_options.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 class FileTypeScreen extends StatelessWidget {
